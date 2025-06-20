@@ -9,3 +9,4 @@ data class LoginResponse(
     val user : User
 )
 data class User(val id:String)
+
