@@ -1,4 +1,4 @@
-package com.example.minigames.ui.register.ui
+package com.example.gamesapplication.viewModels
 
 import android.util.Patterns
 import androidx.lifecycle.LiveData

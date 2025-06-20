@@ -28,6 +28,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,6 +38,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.gamesapplication.navigation.Routes
 import com.example.gamesapplication.R
 import com.example.gamesapplication.RetrofitInstance
+import com.example.gamesapplication.comons.ButtonWithText
+import com.example.gamesapplication.comons.GenerateImage
+import com.example.gamesapplication.comons.TextFieldWithPlaceHolder
 import com.example.gamesapplication.models.LoginRequest
 import com.example.gamesapplication.ui.theme.GamesApplicationTheme
 import kotlinx.coroutines.launch
@@ -49,17 +54,12 @@ import kotlinx.coroutines.launch
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(Modifier.height(140.dp))
-                Image(
-                    painter = painterResource(id = R.drawable.poker_image),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(200.dp).clip(CircleShape)
-                )
+                GenerateImage(Modifier.size(200.dp).clip(CircleShape),R.drawable.poker_image,ContentScale.Crop)
                 Spacer(Modifier.height(40.dp))
                 TextFieldWithPlaceHolder("Nombre de usuario", username, { username = it })
-                TextFieldWithPlaceHolder("Contraseña", password, { password = it })
+                TextFieldWithPlaceHolder("Contraseña", password, { password = it },PasswordVisualTransformation())
                 IniciarSesionButton("Iniciar Sesion", username, password, navController)
-                ButtonWithText("Registrarse")
+                ButtonWithText("Registrarse",{})
             }
         }
     }
@@ -99,38 +99,6 @@ import kotlinx.coroutines.launch
             Log.e("LOGIN", "Excepción: ${e.localizedMessage}")
         }
     }
-
-    @Composable
-    fun ButtonWithText(text: String) {
-        Button(
-            onClick = {},
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ),
-            modifier = Modifier.width(160.dp)
-        ) {
-            Text(text)
-        }
-    }
-
-    @Composable
-    fun TextFieldWithPlaceHolder(text: String, value: String, onValueChange: (String) -> Unit) {
-        TextField(
-            value = value,
-            onValueChange = onValueChange,
-            modifier = Modifier.width(280.dp),
-            placeholder = {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = text,
-                    textAlign = TextAlign.Center
-                )
-            },
-            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
-        )
-    }
-
     @Preview(showBackground = true)
     @Composable
     fun LogginPreview() {

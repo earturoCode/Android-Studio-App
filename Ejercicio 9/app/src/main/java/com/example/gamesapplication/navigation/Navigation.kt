@@ -7,10 +7,14 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.gamesapplication.screens.HomeInterace
 import com.example.gamesapplication.screens.LoginInterface
+import com.example.gamesapplication.screens.PokerInterace
+import com.example.gamesapplication.screens.TocameInterace
 
 object Routes {
     const val LOGIN = "login"
     const val HOME = "home"
+    const val POKER = "poker"
+    const val TOCAME = "tocame"
 }
 
 @Composable
@@ -21,6 +25,12 @@ fun AppNavigation(navController: NavHostController) {
         }
         composable(Routes.HOME) {
             HomeInterace(navController)
+        }
+        composable(Routes.POKER) {
+            PokerInterace(navController)
+        }
+        composable(Routes.TOCAME) {
+            TocameInterace(navController)
         }
     }
 }
