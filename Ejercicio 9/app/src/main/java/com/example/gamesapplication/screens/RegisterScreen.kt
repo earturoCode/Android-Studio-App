@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.gamesapplication.viewModels.RegisterViewModel
 import kotlinx.coroutines.launch
 
 @Composable
@@ -45,7 +46,6 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel) {
         }
     } else {
         Column(modifier = modifier) {
-            // Título
             Text(
                 text = "¡Vamos a crear tu Cuenta!  ",
                 fontSize = 24.sp,
