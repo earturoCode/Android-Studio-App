@@ -38,6 +38,7 @@ import com.example.gamesapplication.R
 import com.example.gamesapplication.RetrofitInstance
 import com.example.gamesapplication.models.LoginRequest
 import com.example.gamesapplication.ui.theme.GamesApplicationTheme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
     @Composable
@@ -59,7 +60,7 @@ import kotlinx.coroutines.launch
                 TextFieldWithPlaceHolder("Nombre de usuario", username, { username = it })
                 TextFieldWithPlaceHolder("Contraseña", password, { password = it })
                 IniciarSesionButton("Iniciar Sesion", username, password, navController)
-                ButtonWithText("Registrarse")
+                ButtonWithText("Registrarse", navController)
             }
         }
     }
@@ -101,9 +102,16 @@ import kotlinx.coroutines.launch
     }
 
     @Composable
-    fun ButtonWithText(text: String) {
+    fun ButtonWithText(text: String, navController: NavHostController) {
+        val scope = rememberCoroutineScope()
+
         Button(
-            onClick = {},
+            onClick = {
+                scope.launch {
+                    delay(1000)
+                    navController.navigate(Routes.REGISTER)
+                }
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary

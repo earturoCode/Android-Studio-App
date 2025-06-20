@@ -1,10 +1,13 @@
 package com.example.minigames.ui.register.ui
 
+import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import kotlinx.coroutines.delay
+import androidx.lifecycle.viewModelScope
+import com.example.gamesapplication.RetrofitInstance
+import kotlinx.coroutines.launch
 
 class RegisterViewModel : ViewModel() {
 
@@ -26,27 +29,83 @@ class RegisterViewModel : ViewModel() {
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
 
+    private val _registerSuccess = MutableLiveData<Boolean>()
+    val registerSuccess : LiveData<Boolean> = _registerSuccess
+
     fun onRegisterChanged(name: String, email: String, password: String, confirmPassword: String) {
         _name.value = name
         _email.value = email
         _password.value = password
         _confirmPassword.value = confirmPassword
-        _registerEnable.value = isValidName(name) && isValidEmail(email) &&
-                isValidPassword(password) && isValidConfirmPassword(password, confirmPassword)
+        _registerEnable.value = isValidForm(name, email, password, confirmPassword)
     }
 
-    private fun isValidName(name: String): Boolean = name.length >= 2
+    // VALIDACIÓN DEL FORMULARIO
+    private fun isValidForm(
+        name: String,
+        email: String,
+        password: String,
+        confirmPassword: String
+    ): Boolean {
+        return name.isNotEmpty() &&
+                isValidEmail(email) &&
+                password.length >= 6 &&
+                password == confirmPassword
+    }
 
-    private fun isValidPassword(password: String): Boolean = password.length > 6
+    private fun isValidEmail(email: String): Boolean =
+        Patterns.EMAIL_ADDRESS.matcher(email).matches()
 
-    private fun isValidEmail(email: String): Boolean = Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    // FUNCIÓN PRINCIPAL PARA REGISTRAR
+    fun onRegisterSelected() {
+        viewModelScope.launch {
+            _isLoading.value = true
+            try {
+                val registerRequest = RegisterRequest(
+                    email = _email.value ?: "",
+                    password = _password.value ?: ""
+                )
 
-    private fun isValidConfirmPassword(password: String, confirmPassword: String): Boolean =
-        password == confirmPassword && confirmPassword.isNotEmpty()
+                val response = RetrofitInstance.api.register(registerRequest)
 
-    suspend fun onRegisterSelected() {
-        _isLoading.value = true
-        delay(4000)
-        _isLoading.value = false
+                if (response.isSuccessful) {
+                    val registerResponse = response.body()
+                    Log.d("REGISTER", "Usuario registrado exitosamente")
+                    Log.d("REGISTER", "Token: ${registerResponse?.access_token}")
+                    Log.d("REGISTER", "User ID: ${registerResponse?.user?.id}")
+                    _registerSuccess.value = true
+
+
+                } else {
+                    val errorBody = response.errorBody()?.string()
+                    Log.e("REGISTER", "Error: ${response.code()} $errorBody")
+                    _registerSuccess.value = false
+                }
+            } catch (e: Exception) {
+                Log.e("REGISTER", "Excepción: ${e.localizedMessage}")
+            } finally {
+                _isLoading.value = false
+            }
+        }
     }
 }
+
+data class RegisterRequest(
+    val email: String,
+    val password: String
+)
+
+data class RegisterResponse(
+    val access_token: String?,
+    val token_type: String?,
+    val expires_in: Int?,
+    val refresh_token: String?,
+    val user: UserData?
+)
+
+data class UserData(
+    val id: String,
+    val email: String,
+    val email_confirmed_at: String?,
+    val created_at: String?
+)

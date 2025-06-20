@@ -1,11 +1,27 @@
 package com.example.minigames.ui.register.ui
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,21 +31,27 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.launch
+import androidx.navigation.NavController
+import com.example.gamesapplication.navigation.Routes
+import kotlinx.coroutines.delay
 
 @Composable
-fun RegisterScreen(viewModel: RegisterViewModel, modifier: Modifier = Modifier) {
+fun RegisterScreen(
+    viewModel: RegisterViewModel,
+    navController: NavController,
+    modifier: Modifier = Modifier
+) {
     Box(
         modifier = modifier
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        Register(Modifier.align(Alignment.Center), viewModel)
+        Register(Modifier.align(Alignment.Center), viewModel, navController)
     }
 }
 
 @Composable
-fun Register(modifier: Modifier, viewModel: RegisterViewModel) {
+fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: NavController) {
 
     val name: String by viewModel.name.observeAsState(initial = "")
     val email: String by viewModel.email.observeAsState(initial = "")
@@ -38,6 +60,15 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel) {
     val registerEnable: Boolean by viewModel.registerEnable.observeAsState(initial = false)
     val isLoading: Boolean by viewModel.isLoading.observeAsState(initial = false)
     val coroutineScope = rememberCoroutineScope()
+    val registerSuccess: Boolean? by viewModel.registerSuccess.observeAsState()
+
+
+    LaunchedEffect(registerSuccess) {
+        if (registerSuccess == true) {
+            delay(1000)
+            navController.navigate(Routes.LOGIN)
+        }
+    }
 
     if (isLoading) {
         Box(Modifier.fillMaxSize()) {
@@ -90,14 +121,16 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel) {
 
             // Botón Registrar
             RegisterButton(registerEnable) {
-                coroutineScope.launch {
-                    viewModel.onRegisterSelected()
-                }
+                viewModel.onRegisterSelected()
             }
             Spacer(modifier = Modifier.padding(8.dp))
 
             // Link para ir al login
-            GoToLogin(Modifier.align(Alignment.CenterHorizontally))
+            GoToLogin(
+                Modifier.align(Alignment.CenterHorizontally)
+            ) {
+                navController.navigate(Routes.LOGIN)
+            }
         }
     }
 }
@@ -208,7 +241,7 @@ fun RegisterButton(registerEnable: Boolean, onRegisterSelected: () -> Unit) {
 }
 
 @Composable
-fun GoToLogin(modifier: Modifier) {
+fun GoToLogin(modifier: Modifier, onNavigateToLogin: () -> Unit) {
     Row(modifier = modifier) {
         Text(
             text = "¿Ya tienes cuenta? ",
@@ -217,7 +250,7 @@ fun GoToLogin(modifier: Modifier) {
         )
         Text(
             text = "Inicia sesión",
-            modifier = Modifier.clickable { /* Navegar a login */ },
+            modifier = Modifier.clickable { onNavigateToLogin() },
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
             color = Color(0xFFFB9600)
