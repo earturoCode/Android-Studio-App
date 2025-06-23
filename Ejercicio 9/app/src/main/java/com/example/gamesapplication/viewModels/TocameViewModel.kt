@@ -19,8 +19,7 @@ class TocameViewModel : ViewModel() {
 
     var isTimerActive by mutableStateOf(false)
         private set
-    var maxWidth = 0.dp
-    var maxHeight = 0.dp
+    var maxSize = mutableStateOf(0.dp to 0.dp)
     var boxPosition by mutableStateOf(Pair(0.dp,0.dp))
 
     fun incrementarPuntaje() {
@@ -44,6 +43,7 @@ class TocameViewModel : ViewModel() {
             }
             timer = 30
             isTimerActive = false
+            puntaje = 0
         }
     }
 }
