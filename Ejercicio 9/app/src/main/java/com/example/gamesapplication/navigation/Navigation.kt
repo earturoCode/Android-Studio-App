@@ -9,7 +9,7 @@ import androidx.navigation.compose.composable
 import com.example.gamesapplication.screens.HomeInterace
 import com.example.gamesapplication.screens.LoginInterface
 import com.example.minigames.ui.register.ui.RegisterScreen
-import com.example.minigames.ui.register.ui.RegisterViewModel
+import com.example.gamesapplication.viewmodels.RegisterViewModel
 
 object Routes {
     const val LOGIN = "login"
