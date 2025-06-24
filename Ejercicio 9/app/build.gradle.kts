@@ -59,5 +59,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.retrofit)
     implementation(libs.gson)
-
+    implementation(libs.datastore.preferences)
 }

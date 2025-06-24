@@ -1,6 +1,5 @@
 package com.example.gamesapplication.viewmodels
 
-import android.R.attr.delay
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
@@ -157,7 +156,7 @@ class RegisterViewModel : ViewModel() {
                 )
 
                 // Llamada a la API
-                val response = RetrofitInstance.api.register(registerRequest)
+                val response = RetrofitInstance.authApi.register(registerRequest)
 
                 if (response.isSuccessful) {
                     val registerResponse = response.body()
@@ -223,7 +222,6 @@ class RegisterViewModel : ViewModel() {
 
 
 // Modelos de respuestas
-
 data class RegisterRequest(
     val email: String,
     val password: String
