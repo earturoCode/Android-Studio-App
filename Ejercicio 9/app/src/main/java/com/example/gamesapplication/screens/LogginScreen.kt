@@ -1,6 +1,5 @@
 package com.example.gamesapplication.screens
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,19 +32,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.gamesapplication.R
-import com.example.gamesapplication.RetrofitInstance
-import com.example.gamesapplication.models.LoginRequest
 import com.example.gamesapplication.navigation.Routes
 import com.example.gamesapplication.ui.theme.GamesApplicationTheme
+import com.example.gamesapplication.viewModels.LoginViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginInterface(navController: NavHostController) {
-    var username by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
+fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewModel= viewModel()) {
 
     Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.fillMaxSize()) {
         Column(
@@ -63,15 +60,15 @@ fun LoginInterface(navController: NavHostController) {
             Spacer(Modifier.height(40.dp))
 
             // Campo de usuario
-            TextFieldWithPlaceHolder("Nombre de usuario", username) { username = it }
+            TextFieldWithPlaceHolder("Nombre de usuario", loginViewModel.username.value ) { loginViewModel.username.value = it }
             Spacer(Modifier.height(16.dp))
 
             // Campo de contraseña
-            TextFieldWithPlaceHolder("Contraseña", password, isPassword = true) { password = it }
+            TextFieldWithPlaceHolder("Contraseña", loginViewModel.password.value, isPassword = true) { loginViewModel.password.value = it }
             Spacer(Modifier.height(24.dp))
 
             // Botón de iniciar sesión
-            IniciarSesionButton("Iniciar Sesión", username, password, navController)
+            IniciarSesionButton("Iniciar Sesión", loginViewModel , navController)
             Spacer(Modifier.height(16.dp))
 
             // Botón de registro
@@ -83,8 +80,7 @@ fun LoginInterface(navController: NavHostController) {
 @Composable
 fun IniciarSesionButton(
     text: String,
-    username: String,
-    password: String,
+    loginViewModel: LoginViewModel,
     navController: NavHostController
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -92,7 +88,7 @@ fun IniciarSesionButton(
     Button(
         onClick = {
             coroutineScope.launch {
-                sendLoginRequest(username, password, navController)
+                 loginViewModel.sendLoginRequest(navController)
             }
         },
         colors = ButtonDefaults.buttonColors(
@@ -119,27 +115,6 @@ fun RegisterButton(text: String, navController: NavHostController) {
         Text(text)
     }
 }
-
-suspend fun sendLoginRequest(username: String, password: String, navController: NavHostController) {
-    val loginRequest = LoginRequest(
-        email = username,
-        password = password
-    )
-    try {
-        val response = RetrofitInstance.api.login(loginRequest)
-        if (response.isSuccessful) {
-            val loginResponse = response.body()
-            navController.navigate(Routes.HOME)
-            Log.d("LOGIN", "Token: ${loginResponse?.access_token}")
-            Log.d("LOGIN", "id: ${loginResponse?.user?.id}")
-        } else {
-            Log.e("LOGIN", "Error: ${response.code()} ${response.errorBody()?.string()}")
-        }
-    } catch (e: Exception) {
-        Log.e("LOGIN", "Excepción: ${e.localizedMessage}")
-    }
-}
-
 @Composable
 fun TextFieldWithPlaceHolder(
     text: String,
