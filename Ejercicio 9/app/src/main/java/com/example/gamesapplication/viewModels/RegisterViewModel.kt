@@ -1,6 +1,5 @@
 package com.example.gamesapplication.viewmodels
 
-import android.R.attr.delay
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
