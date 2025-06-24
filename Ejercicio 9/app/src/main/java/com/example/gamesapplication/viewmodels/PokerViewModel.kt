@@ -30,7 +30,7 @@ class PokerViewModel : ViewModel() {
             nuevoMazo.mezclar()
 
             val nuevoJugador1 = Jugador(nombreJugador)
-            val nuevoJugador2 = Jugador("CPU")
+            val nuevoJugador2 = Jugador("ChatGPT")
 
             nuevoJugador1.cartas = nuevoMazo.darMano()
             nuevoJugador2.cartas = nuevoMazo.darMano()
