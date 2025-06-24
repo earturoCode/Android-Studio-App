@@ -163,7 +163,7 @@ fun PantallaJuego(
     onJugarDeNuevo: () -> Unit,
     onVolverAlMenu: () -> Unit
 ) {
-    // Jugador humano
+    // Jugador ChatGPT
     PlayerSection(
         jugador = gameState.jugador1,
         isWinner = gameState.resultado.contains(gameState.jugador1.nombre) &&
@@ -205,7 +205,7 @@ fun PantallaJuego(
                     color = Color.White.copy(alpha = 0.9f)
                 )
                 Text(
-                    text = "CPU: ${gameState.jugador2.tipoJugada}",
+                    text = "ChatGPT: ${gameState.jugador2.tipoJugada}",
                     fontSize = 12.sp,
                     color = Color.White.copy(alpha = 0.9f)
                 )
@@ -215,11 +215,13 @@ fun PantallaJuego(
 
     Spacer(modifier = Modifier.height(20.dp))
 
-    // Jugador CPU
+    // Jugador ChatGPT
     PlayerSection(
         jugador = gameState.jugador2,
-        isWinner = gameState.resultado.contains("CPU")
+        isWinner = gameState.resultado.contains("ChatGPT")
     )
+
+    Spacer(modifier = Modifier.height(40.dp))
 
 
     // Botones de acción
@@ -250,7 +252,7 @@ fun PantallaJuego(
             colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
         ) {
             Text(
-                text = "MENÚ",
+                text = "HOME",
                 fontSize = 14.sp,
                 fontWeight = FontWeight.Bold
             )
