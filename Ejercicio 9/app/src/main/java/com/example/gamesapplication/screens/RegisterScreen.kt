@@ -1,4 +1,4 @@
-package com.example.minigames.ui.register.ui
+package com.example.gamesapplication.screens
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,16 +15,15 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.gamesapplication.navigation.Routes
-import com.example.gamesapplication.viewModels.RegisterViewModel
+import com.example.gamesapplication.viewmodels.RegisterViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel,
-    navController: NavController,
+    navController: NavHostController,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -37,7 +36,7 @@ fun RegisterScreen(
 }
 
 @Composable
-fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: NavController) {
+fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: NavHostController) {
 
     // Estados observados del ViewModel
     val name: String by viewModel.name.observeAsState(initial = "")
@@ -80,7 +79,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
                 color = Color(0xFF636262),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
-            Spacer(modifier = Modifier.padding(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))  // ← CORRECTO
 
             // Subtítulo descriptivo
             Text(
@@ -89,7 +88,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
                 color = Color(0xFF888888),
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.padding(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))  // ← CORRECTO
 
             // Mostrar error general del servidor si existe
             generalError?.let { error ->
@@ -108,28 +107,28 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
             NameField(name, nameError) {
                 viewModel.onRegisterChanged(it, email, password, confirmPassword)
             }
-            Spacer(modifier = Modifier.padding(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))  // ← CORRECTO
 
             EmailField(email, emailError) {
                 viewModel.onRegisterChanged(name, it, password, confirmPassword)
             }
-            Spacer(modifier = Modifier.padding(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))  // ← CORRECTO
 
             PasswordField(password, passwordError) {
                 viewModel.onRegisterChanged(name, email, it, confirmPassword)
             }
-            Spacer(modifier = Modifier.padding(4.dp))
+            Spacer(modifier = Modifier.height(4.dp))  // ← CORRECTO
 
             ConfirmPasswordField(confirmPassword, confirmPasswordError) {
                 viewModel.onRegisterChanged(name, email, password, it)
             }
-            Spacer(modifier = Modifier.padding(16.dp))
+            Spacer(modifier = Modifier.height(16.dp))  // ← CORRECTO
 
             // Botón de registro
             RegisterButton(registerEnable) {
                 viewModel.onRegisterSelected()
             }
-            Spacer(modifier = Modifier.padding(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))  // ← CORRECTO
 
             // Link para navegar al login
             GoToLogin(Modifier.align(Alignment.CenterHorizontally)) {
@@ -139,8 +138,6 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NameField(name: String, error: String?, onTextFieldChanged: (String) -> Unit) {
     Column {
@@ -175,8 +172,6 @@ fun NameField(name: String, error: String?, onTextFieldChanged: (String) -> Unit
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailField(email: String, error: String?, onTextFieldChanged: (String) -> Unit) {
     Column {
@@ -211,8 +206,6 @@ fun EmailField(email: String, error: String?, onTextFieldChanged: (String) -> Un
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordField(password: String, error: String?, onTextFieldChanged: (String) -> Unit) {
     Column {
@@ -248,8 +241,6 @@ fun PasswordField(password: String, error: String?, onTextFieldChanged: (String)
     }
 }
 
-
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConfirmPasswordField(
     confirmPassword: String,
@@ -288,7 +279,6 @@ fun ConfirmPasswordField(
         }
     }
 }
-
 
 @Composable
 fun RegisterButton(registerEnable: Boolean, onRegisterSelected: () -> Unit) {
