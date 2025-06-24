@@ -2,8 +2,8 @@ package com.example.gamesapplication
 
 import com.example.gamesapplication.models.LoginRequest
 import com.example.gamesapplication.models.LoginResponse
-import com.example.gamesapplication.viewmodels.RegisterRequest
-import com.example.gamesapplication.viewmodels.RegisterResponse
+import com.example.gamesapplication.models.RegisterRequest
+import com.example.gamesapplication.models.RegisterResponse
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Headers
