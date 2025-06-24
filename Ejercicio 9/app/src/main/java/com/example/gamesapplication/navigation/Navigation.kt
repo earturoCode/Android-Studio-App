@@ -2,19 +2,21 @@ package com.example.gamesapplication.navigation
 
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.gamesapplication.screens.HomeInterace
 import com.example.gamesapplication.screens.LoginInterface
 import com.example.minigames.ui.register.ui.RegisterScreen
-import com.example.gamesapplication.viewmodels.RegisterViewModel
+import com.example.gamesapplication.screens.PokerInterace
+import com.example.gamesapplication.screens.TocameInterace
 
 object Routes {
     const val LOGIN = "login"
     const val REGISTER = "register"
     const val HOME = "home"
+    const val POKER = "poker"
+    const val TOCAME = "tocame"
 }
 
 @Composable
@@ -31,6 +33,12 @@ fun AppNavigation(navController: NavHostController) {
         }
         composable(Routes.HOME) {
             HomeInterace(navController)
+        }
+        composable(Routes.POKER) {
+            PokerInterace(navController)
+        }
+        composable(Routes.TOCAME) {
+            TocameInterace(navController)
         }
     }
 }
