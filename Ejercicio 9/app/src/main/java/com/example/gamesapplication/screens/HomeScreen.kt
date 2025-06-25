@@ -56,8 +56,12 @@ fun HorizontalPagerGames(navController: NavHostController){
             }
         }
         Spacer(Modifier.height(40.dp))
-        ButtonWithText("Jugar", {if (pagerState.currentPage==0)navController.navigate(Routes.POKER)else navController.navigate(Routes.TOCAME)})
-        ButtonWithText("Puntajes") { }
+        ButtonWithText("Jugar", {
+            if (pagerState.currentPage==0)navController.navigate(Routes.POKER)else navController.navigate(Routes.TOCAME)
+        })
+        ButtonWithText("Puntajes") {
+            navController.navigate("scoreboard")
+        }
     }
 }
 

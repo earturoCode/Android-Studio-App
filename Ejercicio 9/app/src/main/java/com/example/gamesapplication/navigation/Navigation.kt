@@ -10,6 +10,7 @@ import com.example.gamesapplication.screens.HomeInterace
 import com.example.gamesapplication.screens.LoginInterface
 import com.example.gamesapplication.screens.PokerGameScreen
 import com.example.gamesapplication.screens.RegisterScreen
+import com.example.gamesapplication.screens.ScoreboardScreen
 import com.example.gamesapplication.screens.TocameInterace
 import com.example.gamesapplication.viewmodels.RegisterViewModel
 
@@ -19,6 +20,7 @@ object Routes {
     const val HOME = "home"
     const val POKER = "poker"
     const val TOCAME = "tocame"
+    const val SCOREBOARD = "scoreboard"
 }
 
 @Composable
@@ -41,6 +43,9 @@ fun AppNavigation(navController: NavHostController) {
         }
         composable(Routes.TOCAME) {
             TocameInterace(navController)
+        }
+        composable(Routes.SCOREBOARD) {
+            ScoreboardScreen(navController)
         }
     }
 }

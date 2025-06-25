@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,8 +24,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -48,15 +45,19 @@ fun TocameInterace(navController: NavHostController,tocameViewModel: TocameViewM
         Spacer(Modifier.height(40.dp))
         RowNameScoreTimer(tocameViewModel)
         ContainerTocame(tocameViewModel)
-        RowButtons(tocameViewModel)
+        RowButtons(tocameViewModel, navController)
     }
 }
 
 @Composable
-fun RowButtons(tocameViewModel: TocameViewModel) {
+fun RowButtons(tocameViewModel: TocameViewModel, navController: NavHostController) {
     Row(horizontalArrangement = Arrangement.SpaceEvenly, modifier = Modifier.fillMaxWidth()) {
-        ButtonWithText("Jugar") { if (!tocameViewModel.isTimerActive) tocameViewModel.iniciarTimer() }
-        ButtonWithText("Puntajes") {}
+        ButtonWithText("Jugar") {
+            if (!tocameViewModel.isTimerActive) tocameViewModel.iniciarTimer()
+        }
+        ButtonWithText("Puntajes") {
+            navController.navigate("scoreboard")
+        }
     }
 }
 @SuppressLint("UnusedBoxWithConstraintsScope")
