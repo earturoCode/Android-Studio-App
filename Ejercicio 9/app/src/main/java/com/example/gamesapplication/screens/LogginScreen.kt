@@ -56,7 +56,7 @@ fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewMo
             Spacer(Modifier.height(40.dp))
 
             // Campo de usuario
-            TextFieldWithPlaceHolder("Nombre de usuario", loginViewModel.username ) { loginViewModel.updateUsername(it) }
+            TextFieldWithPlaceHolder("Correo electronico", loginViewModel.username ) { loginViewModel.updateUsername(it) }
             Spacer(Modifier.height(16.dp))
 
             // Campo de contraseña
@@ -103,9 +103,7 @@ fun RegisterButton(text: String, navController: NavHostController) {
         onClick = {
             navController.navigate(Routes.REGISTER)
         },
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = MaterialTheme.colorScheme.primary
-        ),
+        colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary),
         modifier = Modifier.width(200.dp)
     ) {
         Text(text)

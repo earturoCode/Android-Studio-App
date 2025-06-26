@@ -34,8 +34,6 @@ class HomeViewModel: ViewModel() {
         pagerState.currentPage == 1 && isAyuda -> Constants.ayudaTocame
         else -> ""
     }
-
-
     suspend fun setNameFromDataStore() {
         name = UserPreferencesManager.get().userData.first().third?:""
     }

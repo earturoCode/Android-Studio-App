@@ -13,30 +13,29 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80,
-    background = Pink40,
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Color.White,
-    onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F)
+    primary = Color(0xFF90CAF9),        // Azul claro
+    onPrimary = Color(0xFF0D47A1),      // Texto oscuro sobre azul claro
+    secondary = Color(0xFF64B5F6),      // Azul más suave
+    onSecondary = Color.Black,
+    tertiary = Color(0xFF42A5F5),       // Azul intermedio
+    onTertiary = Color.Black,
+    background = Color(0xFF121212),     // Fondo gris oscuro
+    onBackground = Color(0xFFECEFF1),   // Texto claro sobre fondo
+    surface = Color(0xFF1E1E1E),        // Superficies un poco más claras que el fondo
+    onSurface = Color(0xFFECEFF1)       // Texto claro sobre superficie
 )
 
 private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40,
-    background = Pink40,
-    surface = Color(0xFFFFFBFE),
-    onPrimary = Purple80,
+    primary = Color(0xFF0D47A1),        // Azul oscuro
+    onPrimary = Color.White,            // Texto sobre el primario
+    secondary = Color(0xFF1976D2),      // Azul medio
     onSecondary = Color.White,
-    onTertiary = Color.White,
-    onBackground = Color(0xFF1C1B1F),
-    onSurface = Color(0xFF1C1B1F),
-
+    tertiary = Color(0xFF64B5F6),       // Azul claro
+    onTertiary = Color.Black,
+    background = Color(0xFFF1F6F9),     // Gris muy claro
+    onBackground = Color(0xFF1A1A1A),   // Texto sobre fondo
+    surface = Color(0xFFFFFFFF),        // Blanco puro para tarjetas/superficies
+    onSurface = Color(0xFF1A1A1A)       // Texto sobre superficie
 )
 
 @Composable

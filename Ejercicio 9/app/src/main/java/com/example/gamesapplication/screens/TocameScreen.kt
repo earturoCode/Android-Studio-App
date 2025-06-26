@@ -41,13 +41,12 @@ import kotlin.random.Random
 @Composable
 fun TocameInterace(navController: NavHostController,tocameViewModel: TocameViewModel= viewModel()) {
     LaunchedEffect (Unit) { tocameViewModel.updateName() }
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Spacer(Modifier.height(40.dp))
         RowNameScoreTimer(tocameViewModel)
         ContainerTocame(tocameViewModel)
         RowButtons(tocameViewModel, navController)
         Spacer(Modifier.height(10.dp))
-        RowButtons(tocameViewModel, navController)
     }
 }
 
@@ -79,7 +78,7 @@ fun ContainerTocame(tocameViewModel: TocameViewModel) {
             Box(modifier = Modifier.offset(tocameViewModel.boxPosition.first,
                     tocameViewModel.boxPosition.second)
                     .clip(CircleShape)
-                    .background(color = MaterialTheme.colorScheme.tertiary).size(60.dp)
+                    .background(color = MaterialTheme.colorScheme.onSecondary).size(60.dp)
                     .clickable {
                         Log.d("TOCAME", "Clickeo")
                         tocameViewModel.incrementarPuntaje()
@@ -101,14 +100,13 @@ fun returnOffsetValues(tocameViewModel : TocameViewModel,density: Density):Pair<
 fun RowNameScoreTimer(tocameViewModel: TocameViewModel) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text = tocameViewModel.name)
+        horizontalArrangement = Arrangement.SpaceBetween) {
+        Text(text = tocameViewModel.name, color= MaterialTheme.colorScheme.onBackground)
         Text(
-            text = "Puntaje: ${tocameViewModel.puntaje}",
+            text = "Puntaje: ${tocameViewModel.puntaje}",color=MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.align(Alignment.CenterVertically)
         )
-        Text(text = tocameViewModel.timer.toString())
+        Text(text = tocameViewModel.timer.toString(), color= MaterialTheme.colorScheme.onBackground)
     }
 }
 @Preview(showBackground = true)

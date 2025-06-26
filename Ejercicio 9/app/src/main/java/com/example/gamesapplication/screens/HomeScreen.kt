@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -45,11 +47,12 @@ fun HomeInterface(navController: NavHostController, homeViewModel: HomeViewModel
         homeViewModel.setNameFromDataStore()
     }
     homeViewModel.updatePagerState(rememberPagerState (0, pageCount = {2}))
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().background(
+        MaterialTheme.colorScheme.background)) {
         val density = LocalDensity.current
         Spacer(Modifier.height(80.dp))
-        Text(text="Bienvenido: ${homeViewModel.name}")
         ButtonWithText(text = "Cerrar sesion") {navController.navigate(Routes.LOGIN) }
+        Text(text="Bienvenido: ${homeViewModel.name}")
         Spacer(modifier= Modifier.height(120.dp))
         HorizontalPagerGames(homeViewModel)
         Spacer(Modifier.height(32.dp))
@@ -63,7 +66,7 @@ fun HomeInterface(navController: NavHostController, homeViewModel: HomeViewModel
         }
         Spacer(Modifier.height(240.dp-homeViewModel.textAyudaHeight))
         ButtonWithText(text="Ayuda") { homeViewModel.changeAyudaState() }
-        Text(text = homeViewModel.returnAyudaText(), modifier = Modifier.onGloballyPositioned{
+        Text(text = homeViewModel.returnAyudaText(), textAlign = TextAlign.Justify, modifier = Modifier.padding(horizontal = 8.dp).onGloballyPositioned{
             layoutCoordinates -> homeViewModel.updateTextAyudaHeight(with(density){layoutCoordinates.size.height.toDp()})
         })
     }
