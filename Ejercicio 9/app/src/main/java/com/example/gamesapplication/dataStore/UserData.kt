@@ -12,13 +12,11 @@ class UserPreferencesManager private constructor(context: Context) {
 
     companion object {
         private var INSTANCE: UserPreferencesManager? = null
-
         fun init(context: Context) {
             if (INSTANCE == null) {
                 INSTANCE = UserPreferencesManager(context)
             }
         }
-
         fun get(): UserPreferencesManager {
             return INSTANCE ?: throw IllegalStateException("UserPreferencesManager not initialized")
         }
@@ -26,16 +24,18 @@ class UserPreferencesManager private constructor(context: Context) {
     object UserPreferencesKeys {
         val USER_ID = stringPreferencesKey("user_id")
         val TOKEN = stringPreferencesKey("token")
+        val USERNAME = stringPreferencesKey("username")
     }
-    suspend fun saveUserData(userId: String, token: String) {
+    suspend fun saveUserData(userId: String, token: String, username:String) {
         dataStore.edit { prefs ->
             prefs[UserPreferencesKeys.USER_ID] = userId
             prefs[UserPreferencesKeys.TOKEN] = token
+            prefs[UserPreferencesKeys.USERNAME] = username
         }
     }
 
-    val userData: Flow<Pair<String?, String?>> = dataStore.data.map { prefs ->
-        prefs[UserPreferencesKeys.USER_ID] to prefs[UserPreferencesKeys.TOKEN]
+    val userData: Flow<Triple<String?, String?, String?>> = dataStore.data.map { prefs ->
+        Triple(prefs[UserPreferencesKeys.USER_ID],prefs[UserPreferencesKeys.TOKEN],prefs[UserPreferencesKeys.USERNAME])
     }
 }
 val Context.dataStore by preferencesDataStore(name = "user_prefs")

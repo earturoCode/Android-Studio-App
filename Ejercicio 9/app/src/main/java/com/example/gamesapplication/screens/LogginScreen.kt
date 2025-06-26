@@ -18,11 +18,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -60,11 +56,11 @@ fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewMo
             Spacer(Modifier.height(40.dp))
 
             // Campo de usuario
-            TextFieldWithPlaceHolder("Nombre de usuario", loginViewModel.username.value ) { loginViewModel.username.value = it }
+            TextFieldWithPlaceHolder("Nombre de usuario", loginViewModel.username ) { loginViewModel.updateUsername(it) }
             Spacer(Modifier.height(16.dp))
 
             // Campo de contraseña
-            TextFieldWithPlaceHolder("Contraseña", loginViewModel.password.value, isPassword = true) { loginViewModel.password.value = it }
+            TextFieldWithPlaceHolder("Contraseña", loginViewModel.password, isPassword = true) { loginViewModel.updatePassword(it) }
             Spacer(Modifier.height(24.dp))
 
             // Botón de iniciar sesión
