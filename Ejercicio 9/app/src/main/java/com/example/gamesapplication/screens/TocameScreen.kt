@@ -43,11 +43,12 @@ import kotlin.random.Random
 
 @Composable
 fun TocameInterace(navController: NavHostController,tocameViewModel: TocameViewModel= viewModel()) {
-
+    LaunchedEffect (Unit) { tocameViewModel.updateName() }
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(Modifier.height(40.dp))
         RowNameScoreTimer(tocameViewModel)
         ContainerTocame(tocameViewModel)
+        Spacer(Modifier.height(10.dp))
         RowButtons(tocameViewModel)
     }
 }
@@ -65,37 +66,31 @@ fun ContainerTocame(tocameViewModel: TocameViewModel) {
     val density = LocalDensity.current
     BoxWithConstraints(
         modifier = Modifier.fillMaxWidth()
-            .height(LocalConfiguration.current.screenHeightDp.dp - 120.dp)
+            .height(LocalConfiguration.current.screenHeightDp.dp - 160.dp)
             .background(MaterialTheme.colorScheme.secondary)
     ) {
         LaunchedEffect(Unit) {
-            tocameViewModel.maxSize.value = maxWidth to maxHeight
-            tocameViewModel.boxPosition = returnOffsetValues(tocameViewModel, density)
-            Log.d(
-                "TOCAME",
-                "Asigno tamaño: $maxWidth x $maxHeight y posición: ${tocameViewModel.boxPosition}"
-            )
-
+            tocameViewModel.updateMaxSize(maxWidth to maxHeight)
+            tocameViewModel.updateBoxPosition(returnOffsetValues(tocameViewModel, density))
         }
         if (tocameViewModel.isTimerActive) {
             Box(modifier = Modifier.offset(tocameViewModel.boxPosition.first,
                     tocameViewModel.boxPosition.second)
                     .clip(CircleShape)
-                    .background(color = MaterialTheme.colorScheme.tertiary).size(40.dp)
+                    .background(color = MaterialTheme.colorScheme.tertiary).size(60.dp)
                     .clickable {
                         Log.d("TOCAME", "Clickeo")
                         tocameViewModel.incrementarPuntaje()
-                        tocameViewModel.boxPosition =
-                            returnOffsetValues(tocameViewModel, density)
+                        tocameViewModel.updateBoxPosition(returnOffsetValues(tocameViewModel, density))
                     }
             )
         }
     }
 }
 fun returnOffsetValues(tocameViewModel : TocameViewModel,density: Density):Pair<Dp,Dp> {
-    val maxWidthPx = with(density) { tocameViewModel.maxSize.value.first.toPx() }
-    val maxHeightPx = with(density) { tocameViewModel.maxSize.value.second.toPx() }
-    val boxSize = with(density) { 40.dp.toPx() }
+    val maxWidthPx = with(density) { tocameViewModel.maxSize.first.toPx() }
+    val maxHeightPx = with(density) { tocameViewModel.maxSize.second.toPx() }
+    val boxSize = with(density) { 60.dp.toPx() }
     val offsetXPx = Random.nextInt(maxWidthPx.toInt() - boxSize.toInt())
     val offsetYPx = Random.nextInt(maxHeightPx.toInt() - boxSize.toInt())
     return with(density) { offsetXPx.toDp() } to with(density) { offsetYPx.toDp() }
@@ -106,7 +101,7 @@ fun RowNameScoreTimer(tocameViewModel: TocameViewModel) {
         modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = "Name")
+        Text(text = tocameViewModel.name)
         Text(
             text = "Puntaje: ${tocameViewModel.puntaje}",
             modifier = Modifier.align(Alignment.CenterVertically)
@@ -114,9 +109,6 @@ fun RowNameScoreTimer(tocameViewModel: TocameViewModel) {
         Text(text = tocameViewModel.timer.toString())
     }
 }
-
-
-
 @Preview(showBackground = true)
 @Composable
 fun TocamePreview() {
