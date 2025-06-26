@@ -47,7 +47,7 @@ fun TocameInterace(navController: NavHostController,tocameViewModel: TocameViewM
         ContainerTocame(tocameViewModel)
         RowButtons(tocameViewModel, navController)
         Spacer(Modifier.height(10.dp))
-        RowButtons(tocameViewModel)
+        RowButtons(tocameViewModel, navController)
     }
 }
 

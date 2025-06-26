@@ -45,7 +45,7 @@ fun AppNavigation(navController: NavHostController) {
             TocameInterace(navController)
         }
         composable(Routes.SCOREBOARD) {
-            ScoreboardScreen(navController)
+            ScoreboardScreen( )
         }
     }
 }

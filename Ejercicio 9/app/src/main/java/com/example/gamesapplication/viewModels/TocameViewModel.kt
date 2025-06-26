@@ -35,7 +35,7 @@ class TocameViewModel : ViewModel() {
     var maxSize by mutableStateOf(0.dp to 0.dp)
         private set
 
-    var boxPosition by mutableStateOf(Pair(0.dp,0.dp))
+    var boxPosition by mutableStateOf(Pair(0.dp, 0.dp))
         private set
 
     fun incrementarPuntaje() {
@@ -48,16 +48,16 @@ class TocameViewModel : ViewModel() {
         isTimerActive = false
     }
 
-    fun updateMaxSize(newMaxSize : Pair<Dp,Dp>){
-        maxSize=newMaxSize
+    fun updateMaxSize(newMaxSize: Pair<Dp, Dp>) {
+        maxSize = newMaxSize
     }
 
-    fun updateBoxPosition(newBoxPosition:Pair<Dp,Dp>){
-        boxPosition=newBoxPosition
+    fun updateBoxPosition(newBoxPosition: Pair<Dp, Dp>) {
+        boxPosition = newBoxPosition
     }
 
-    suspend fun updateName(){
-        name =  UserPreferencesManager.get().userData.first().third?:""
+    suspend fun updateName() {
+        name = UserPreferencesManager.get().userData.first().third ?: ""
     }
 
     fun iniciarTimer() {
@@ -73,25 +73,29 @@ class TocameViewModel : ViewModel() {
             sendCreateScoreRequest()
         }
     }
+
     private suspend fun sendCreateScoreRequest() {
-        val userPreferences=UserPreferencesManager.get()
+        val userPreferences = UserPreferencesManager.get()
         val currentDate = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
         val formattedDate = currentDate.format(formatter)
-        Log.e("LOGIN", "Exitoso: ${userPreferences.userData.first().first}${userPreferences.userData.first().second}")
+        Log.e(
+            "LOGIN",
+            "Exitoso: ${userPreferences.userData.first().first}${userPreferences.userData.first().second}"
+        )
         val createScoreRequest = CreateScoreRequest(
-            user_id = userPreferences.userData.first().first?: "",
+            user_id = userPreferences.userData.first().first ?: "",
             game_id = "1",
             score = puntaje,
             date = formattedDate.toString()
         )
         try {
             val response = RetrofitInstance.restApi.createScore(
-                "Bearer ${userPreferences.userData.first().second?: ""}",createScoreRequest)
+                "Bearer ${userPreferences.userData.first().second ?: ""}", createScoreRequest
+            )
             if (response.isSuccessful) {
                 Log.e("LOGIN", "Exitoso: ${response.code()}")
-            }
-            else {
+            } else {
                 Log.e("LOGIN", "Error: ${response.code()} ${response.errorBody()?.string()}")
             }
         } catch (e: Exception) {
