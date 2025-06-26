@@ -23,7 +23,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.gamesapplication.models.Carta
 import com.example.gamesapplication.models.Jugador
 import com.example.gamesapplication.ui.theme.GamesApplicationTheme
-import com.example.gamesapplication.viewmodels.PokerViewModel
+import com.example.gamesapplication.viewModels.PokerViewModel
 
 @Composable
 fun PokerGameScreen(

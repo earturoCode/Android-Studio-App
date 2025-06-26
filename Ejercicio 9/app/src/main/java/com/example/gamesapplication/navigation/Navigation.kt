@@ -12,7 +12,7 @@ import com.example.gamesapplication.screens.PokerGameScreen
 import com.example.gamesapplication.screens.RegisterScreen
 import com.example.gamesapplication.screens.ScoreboardScreen
 import com.example.gamesapplication.screens.TocameInterace
-import com.example.gamesapplication.viewmodels.RegisterViewModel
+import com.example.gamesapplication.viewModels.RegisterViewModel
 
 object Routes {
     const val LOGIN = "login"

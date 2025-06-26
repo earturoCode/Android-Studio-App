@@ -38,6 +38,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.gamesapplication.R
 import com.example.gamesapplication.RetrofitInstance
 import com.example.gamesapplication.models.LoginRequest
+import com.example.gamesapplication.models.UserSession
 import com.example.gamesapplication.navigation.Routes
 import com.example.gamesapplication.ui.theme.GamesApplicationTheme
 import kotlinx.coroutines.launch
@@ -126,12 +127,21 @@ suspend fun sendLoginRequest(username: String, password: String, navController: 
         password = password
     )
     try {
-        val response = RetrofitInstance.api.login(loginRequest)
+        val response = RetrofitInstance.api.login(loginRequest) // Mantener igual
         if (response.isSuccessful) {
             val loginResponse = response.body()
-            navController.navigate(Routes.HOME)
-            Log.d("LOGIN", "Token: ${loginResponse?.access_token}")
-            Log.d("LOGIN", "id: ${loginResponse?.user?.id}")
+            if (loginResponse != null) {
+                UserSession.login(
+                    userId = loginResponse.user.id,
+                    email = username,
+                    token = loginResponse.access_token
+                )
+
+                navController.navigate(Routes.HOME)
+                Log.d("LOGIN", "Login exitoso para: ${UserSession.getCurrentUserName()}")
+                Log.d("LOGIN", "Token: ${loginResponse.access_token}")
+                Log.d("LOGIN", "ID: ${loginResponse.user.id}")
+            }
         } else {
             Log.e("LOGIN", "Error: ${response.code()} ${response.errorBody()?.string()}")
         }

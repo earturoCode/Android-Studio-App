@@ -16,7 +16,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -36,7 +35,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.gamesapplication.models.Score
-import com.example.gamesapplication.viewmodels.ScoresViewModel
+import com.example.gamesapplication.models.UserSession
+import com.example.gamesapplication.viewModels.ScoresViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +57,7 @@ fun ScoreboardScreen(
 
     // Obtener el nombre real del usuario desde el login
     LaunchedEffect(Unit) {
-        viewModel.setCurrentUser("Usuario") // Cambiar por el usuario real que se vaya iniciar sesion
+        viewModel.setCurrentUser(   UserSession.getCurrentUserName()) // Usar el usuario real
     }
 
     Column(
@@ -194,7 +194,7 @@ fun ScoreTableHeader() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Pos",
+                text = "Top",
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.weight(0.5f),
                 textAlign = TextAlign.Center
@@ -293,17 +293,7 @@ fun ScoreItem(
                 modifier = Modifier.weight(1f),
                 textAlign = TextAlign.End,
                 fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = when (position) {
-                    1 -> Color(0xFFFFD700) // Dorado
-                    2 -> Color(0xFFC0C0C0) // Plateado
-                    3 -> Color(0xFFCD7F32) // Bronce
-                    else -> if (isCurrentUser) {
-                        MaterialTheme.colorScheme.primary
-                    } else {
-                        MaterialTheme.colorScheme.onSurface
-                    }
-                }
+                fontWeight = FontWeight.Bold
             )
 
             // Fecha
