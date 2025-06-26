@@ -105,7 +105,7 @@ class MazoDeCartas {
 // Estado del juego
 data class GameState(
     val jugador1: Jugador = Jugador("Usuario"),
-    val jugador2: Jugador = Jugador("CPU"),
+    val jugador2: Jugador = Jugador("ChatGPT"),
     val gameStarted: Boolean = false,
     val gameFinished: Boolean = false,
     val resultado: String = "",

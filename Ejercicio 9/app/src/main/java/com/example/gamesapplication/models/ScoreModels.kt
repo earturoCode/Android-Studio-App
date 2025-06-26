@@ -10,7 +10,7 @@ data class Game(
     @SerializedName("created_at") val createdAt: String? = null
 )
 
-// Modelo para Score de la API (respuesta del servidor)
+// Modelo para Score de la API
 data class ApiScore(
     val id: Int? = null,
     @SerializedName("user_id") val userId: String,

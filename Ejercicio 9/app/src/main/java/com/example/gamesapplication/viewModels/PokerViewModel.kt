@@ -66,7 +66,7 @@ class PokerViewModel : ViewModel() {
     fun jugadorGano(): Boolean {
         val resultado = _gameState.value.resultado
         return resultado.contains(_gameState.value.jugador1.nombre) &&
-                !resultado.contains("CPU")
+                !resultado.contains("ChatGPT")
     }
 
     // Función para obtener el puntaje basado en la jugada

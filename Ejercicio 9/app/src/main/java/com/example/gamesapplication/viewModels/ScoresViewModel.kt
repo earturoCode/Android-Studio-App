@@ -83,8 +83,7 @@ class ScoresViewModel : ViewModel() {
         viewModelScope.launch {
             try {
                 if (UserSession.isLoggedIn()) {
-                    val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                        .format(Date())
+                    val currentDate = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(Date())
 
                     val request = CreateScoreRequest(
                         userId = UserSession.getCurrentUserId(),
@@ -125,6 +124,7 @@ class ScoresViewModel : ViewModel() {
                 it.userId == UserSession.getCurrentUserId() ||
                         it.playerName == UserSession.getCurrentUserName()
             }
+
             else -> allScores.take(10)
         }
     }

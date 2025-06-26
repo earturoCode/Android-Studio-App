@@ -41,7 +41,6 @@ import com.example.gamesapplication.viewModels.ScoresViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ScoreboardScreen(
-    navController: NavHostController,
     viewModel: ScoresViewModel = viewModel()
 ) {
     val isLoading by viewModel.isLoading.collectAsState()
@@ -51,9 +50,9 @@ fun ScoreboardScreen(
     val filterTypes = listOf("Top 10", "Top 5", "Mis Puntajes")
 
     // Obtener puntajes filtrados según la selección
-    val filteredScores = remember(selectedFilter) {
-        viewModel.getFilteredScores(selectedFilter)
-    }
+    val scores by viewModel.scores.collectAsState()
+    val filteredScores = viewModel.getFilteredScores(selectedFilter)
+
 
     // Obtener el nombre real del usuario desde el login
     LaunchedEffect(Unit) {
@@ -78,8 +77,8 @@ fun ScoreboardScreen(
                 fontWeight = FontWeight.Bold
             )
 
-            // Espacio vacío para balancear el diseño
-            Spacer(modifier = Modifier.weight(0.1f))
+//            // Espacio vacío para balancear el diseño
+//            Spacer (modifier = Modifier.weight(0.1f))
         }
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -245,22 +244,6 @@ fun ScoreItem(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Posición con medalla para los primeros 3
-            Box(
-                modifier = Modifier.weight(0.5f),
-                contentAlignment = Alignment.Center
-            ) {
-                when (position) {
-                    1 -> Text(text = "🥇", fontSize = 24.sp)
-                    2 -> Text(text = "🥈", fontSize = 24.sp)
-                    3 -> Text(text = "🥉", fontSize = 24.sp)
-                    else -> Text(
-                        text = "$position",
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 18.sp
-                    )
-                }
-            }
 
             // Nombre del jugador
             Row(

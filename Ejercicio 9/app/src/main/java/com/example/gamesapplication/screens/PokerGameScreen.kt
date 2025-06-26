@@ -101,7 +101,7 @@ fun PantallaInicial(
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "$nombreJugador vs CPU\nPrepárate para una batalla épica de cartas",
+                text = "$nombreJugador vs ChatGPT\nPrepárate para una batalla épica de cartas",
                 fontSize = 16.sp,
                 textAlign = TextAlign.Center,
                 color = Color.Gray
