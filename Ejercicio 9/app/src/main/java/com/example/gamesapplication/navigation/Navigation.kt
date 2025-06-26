@@ -6,7 +6,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.gamesapplication.screens.HomeInterace
+import com.example.gamesapplication.screens.HomeInterface
 import com.example.gamesapplication.screens.LoginInterface
 import com.example.gamesapplication.screens.PokerGameScreen
 import com.example.gamesapplication.screens.RegisterScreen
@@ -36,7 +36,7 @@ fun AppNavigation(navController: NavHostController) {
             )
         }
         composable(Routes.HOME) {
-            HomeInterace(navController)
+            HomeInterface(navController)
         }
         composable(Routes.POKER) {
             PokerGameScreen(navController)

@@ -36,7 +36,7 @@ class ScoresViewModel : ViewModel() {
             _errorMessage.value = null
 
             try {
-                val response = RetrofitInstance.api.getAllScores()
+                val response = RetrofitInstance.authApi.getAllScores()
                 if (response.isSuccessful) {
                     val apiScores = response.body() ?: emptyList()
 
@@ -92,7 +92,7 @@ class ScoresViewModel : ViewModel() {
                         date = currentDate
                     )
 
-                    val response = RetrofitInstance.api.createScore(request)
+                    val response = RetrofitInstance.authApi.createScore(request)
                     if (response.isSuccessful) {
                         Log.d("ScoresViewModel", "Puntaje de Tocame guardado: $points")
                         cargarPuntajes() // Recargar lista
