@@ -34,6 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.gamesapplication.comons.ButtonWithText
+import com.example.gamesapplication.navigation.Routes
 import com.example.gamesapplication.ui.theme.GamesApplicationTheme
 import com.example.gamesapplication.viewModels.TocameViewModel
 import kotlin.random.Random
@@ -57,7 +58,7 @@ fun RowButtons(tocameViewModel: TocameViewModel, navController: NavHostControlle
             if (!tocameViewModel.isTimerActive) tocameViewModel.iniciarTimer()
         }
         ButtonWithText("Puntajes") {
-            navController.navigate("scoreboard")
+            navController.navigate("${Routes.SCOREBOARD}/Top 5")
         }
     }
 }

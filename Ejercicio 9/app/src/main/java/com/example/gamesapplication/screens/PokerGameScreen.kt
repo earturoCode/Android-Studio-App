@@ -1,17 +1,41 @@
 package com.example.gamesapplication.screens
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.R
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,17 +63,32 @@ fun PokerGameScreen(
             .background(Color(0xFF0F5132))
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
+
     ) {
         // Título del juego
         Text(
-            text = "🃏 POKER GAME 🃏",
+            text = "🃏 POKER MBARETE 🃏",
             fontSize = 28.sp,
             fontWeight = FontWeight.Bold,
             color = Color.White,
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 100.dp), // Espacio superior
+            textAlign = TextAlign.Center // Centrado horizontal
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Image(
+            painter = painterResource(id = com.example.gamesapplication.R.drawable.poker_game),
+            contentDescription = "Imagen Poker",
+            contentScale = ContentScale.Fit,
+            modifier = Modifier
+                .size(200.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .align(Alignment.CenterHorizontally)
+        )
+        Spacer(modifier = Modifier.height(2.dp))
 
         when {
             !gameState.gameStarted -> {
@@ -82,80 +121,86 @@ fun PantallaInicial(
     nombreJugador: String,
     onIniciarJuego: () -> Unit
 ) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+    Box(modifier = Modifier.fillMaxSize()) {
+        Card(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
-            Text(
-                text = "¡Bienvenido al Poker!",
-                fontSize = 20.sp,
-                fontWeight = FontWeight.Bold,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "$nombreJugador vs ChatGPT\nPrepárate para una batalla épica de cartas",
-                fontSize = 16.sp,
-                textAlign = TextAlign.Center,
-                color = Color.Gray
-            )
-            Spacer(modifier = Modifier.height(24.dp))
-            Button(
-                onClick = onIniciarJuego,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(50.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0F5132))
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "¡REPARTIR CARTAS!",
+                    text = "¡Bienvenido al Poker!",
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Bold,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "$nombreJugador vs ChatGPT\nPrepárate para una batalla épica de cartas",
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+                Button(
+                    onClick = onIniciarJuego,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(50.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF0F5132))
+                ) {
+                    Text(
+                        text = "¡REPARTIR CARTAS!",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun PantallaCarga() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Card(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(16.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.White),
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+        ) {
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(50.dp),
+                    color = Color(0xFF0F5132)
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    text = "Mezclando cartas...",
                     fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Medium
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Repartiendo manos",
+                    fontSize = 14.sp,
+                    color = Color.Gray
                 )
             }
         }
     }
 }
 
-@Composable
-fun PantallaCarga() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            CircularProgressIndicator(
-                modifier = Modifier.size(50.dp),
-                color = Color(0xFF0F5132)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = "Mezclando cartas...",
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = "Repartiendo manos",
-                fontSize = 14.sp,
-                color = Color.Gray
-            )
-        }
-    }
-}
 
 @Composable
 fun PantallaJuego(
@@ -163,107 +208,114 @@ fun PantallaJuego(
     onJugarDeNuevo: () -> Unit,
     onVolverAlMenu: () -> Unit
 ) {
-    // Jugador ChatGPT
-    PlayerSection(
-        jugador = gameState.jugador1,
-        isWinner = gameState.resultado.contains(gameState.jugador1.nombre) &&
-                !gameState.resultado.contains("ChatGPT")
-    )
-
-    Spacer(modifier = Modifier.height(20.dp))
-
-    // Resultado
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = when {
-                gameState.resultado.contains("Empate") -> Color(0xFFFFB74D)
-                gameState.resultado.contains(gameState.jugador1.nombre) -> Color(0xFF4CAF50)
-                else -> Color(0xFFE57373)
-            }
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(1.dp)
     ) {
         Column(
-            modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            modifier = Modifier.align(Alignment.Center),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-            Text(
-                text = gameState.resultado,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                textAlign = TextAlign.Center
+            // Jugador 1
+            PlayerSection(
+                jugador = gameState.jugador1,
+                isWinner = gameState.resultado.contains(gameState.jugador1.nombre) &&
+                        !gameState.resultado.contains("ChatGPT")
             )
 
-            // Mostrar tipos de jugadas
-            if (gameState.jugador1.tipoJugada != null && gameState.jugador2.tipoJugada != null) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "${gameState.jugador1.nombre}: ${gameState.jugador1.tipoJugada}",
-                    fontSize = 12.sp,
-                    color = Color.White.copy(alpha = 0.9f)
-                )
-                Text(
-                    text = "ChatGPT: ${gameState.jugador2.tipoJugada}",
-                    fontSize = 12.sp,
-                    color = Color.White.copy(alpha = 0.9f)
-                )
+            // Resultado
+            Card(
+                modifier = Modifier.fillMaxWidth(),
+                colors = CardDefaults.cardColors(
+                    containerColor = when {
+                        gameState.resultado.contains("Empate") -> Color(0xFFFFB74D)
+                        gameState.resultado.contains(gameState.jugador1.nombre) -> Color(0xFF4CAF50)
+                        else -> Color(0xFFE57373)
+                    }
+                ),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = gameState.resultado,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color.White,
+                        textAlign = TextAlign.Center
+                    )
+
+                    if (gameState.jugador1.tipoJugada != null && gameState.jugador2.tipoJugada != null) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(
+                            text = "${gameState.jugador1.nombre}: ${gameState.jugador1.tipoJugada}",
+                            fontSize = 12.sp,
+                            color = Color.White.copy(alpha = 0.9f)
+                        )
+                        Text(
+                            text = "ChatGPT: ${gameState.jugador2.tipoJugada}",
+                            fontSize = 12.sp,
+                            color = Color.White.copy(alpha = 0.9f)
+                        )
+                    }
+                }
             }
-        }
-    }
 
-    Spacer(modifier = Modifier.height(20.dp))
-
-    // Jugador ChatGPT
-    PlayerSection(
-        jugador = gameState.jugador2,
-        isWinner = gameState.resultado.contains("ChatGPT")
-    )
-
-    Spacer(modifier = Modifier.height(40.dp))
-
-
-    // Botones de acción
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Button(
-            onClick = onJugarDeNuevo,
-            modifier = Modifier
-                .weight(1f)
-                .height(50.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF6B35))
-        ) {
-            Text(
-                text = "JUGAR DE NUEVO",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
+            // Jugador 2
+            PlayerSection(
+                jugador = gameState.jugador2,
+                isWinner = gameState.resultado.contains("ChatGPT")
             )
-        }
 
-        OutlinedButton(
-            onClick = onVolverAlMenu,
-            modifier = Modifier
-                .weight(1f)
-                .height(50.dp),
-            border = BorderStroke(2.dp, Color.White),
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
-        ) {
-            Text(
-                text = "HOME",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
-            )
+            // Botones
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(
+                    onClick = onJugarDeNuevo,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFFF6B35))
+                ) {
+                    Text(
+                        text = "JUGAR DE NUEVO",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+
+                OutlinedButton(
+                    onClick = onVolverAlMenu,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    border = BorderStroke(2.dp, Color.White),
+                    colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White)
+                ) {
+                    Text(
+                        text = "HOME",
+                        fontSize = 14.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+            }
         }
     }
 }
 
+
 @Composable
 fun PlayerSection(jugador: Jugador, isWinner: Boolean) {
     Card(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(220.dp),
         colors = CardDefaults.cardColors(
             containerColor = if (isWinner) Color(0xFF81C784) else Color.White
         ),
@@ -271,7 +323,10 @@ fun PlayerSection(jugador: Jugador, isWinner: Boolean) {
         border = if (isWinner) BorderStroke(3.dp, Color(0xFF4CAF50)) else null
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -280,31 +335,28 @@ fun PlayerSection(jugador: Jugador, isWinner: Boolean) {
             ) {
                 Text(
                     text = jugador.nombre,
-                    fontSize = 18.sp,
+                    fontSize = 22.sp,
                     fontWeight = FontWeight.Bold,
                     color = if (isWinner) Color.White else Color.Black
                 )
                 if (isWinner) {
                     Text(
                         text = "👑",
-                        fontSize = 24.sp
+                        fontSize = 28.sp
                     )
                 }
             }
 
-            Spacer(modifier = Modifier.height(8.dp))
-
             Text(
                 text = jugador.tipoJugada ?: "",
-                fontSize = 14.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Medium,
                 color = if (isWinner) Color.White else Color(0xFF666666)
             )
 
-            Spacer(modifier = Modifier.height(12.dp))
-
+            // Mostrar las cartas más grandes
             LazyRow(
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 items(jugador.cartas) { carta ->
                     CartaComponent(carta = carta)
@@ -313,6 +365,7 @@ fun PlayerSection(jugador: Jugador, isWinner: Boolean) {
         }
     }
 }
+
 
 @Composable
 fun CartaComponent(carta: Carta) {
@@ -323,12 +376,12 @@ fun CartaComponent(carta: Carta) {
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
         border = BorderStroke(1.dp, Color.Gray),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(10.dp)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(4.dp),
+                .padding(6.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.SpaceBetween
         ) {
@@ -347,7 +400,7 @@ fun CartaComponent(carta: Carta) {
 
             Text(
                 text = carta.getDisplayValue(),
-                fontSize = 14.sp,
+                fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 color = carta.getSuitColor(),
                 modifier = Modifier.rotate(180f)
@@ -355,6 +408,7 @@ fun CartaComponent(carta: Carta) {
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

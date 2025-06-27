@@ -62,8 +62,9 @@ fun HomeInterface(navController: NavHostController, homeViewModel: HomeViewModel
                     Routes.POKER
                 ) else navController.navigate(Routes.TOCAME)
             }
-            ButtonWithText("Puntajes") { }
-        }
+            ButtonWithText("Puntajes") {
+                navController.navigate("${Routes.SCOREBOARD}/Mis Puntajes")
+            }        }
         Spacer(Modifier.height(240.dp-homeViewModel.textAyudaHeight))
         ButtonWithText(text="Ayuda") { homeViewModel.changeAyudaState() }
         Text(text = homeViewModel.returnAyudaText(), textAlign = TextAlign.Justify, modifier = Modifier.padding(horizontal = 8.dp).onGloballyPositioned{

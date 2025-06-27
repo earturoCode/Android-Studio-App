@@ -34,6 +34,7 @@ import com.example.gamesapplication.navigation.Routes
 import com.example.gamesapplication.viewModels.RegisterViewModel
 import kotlinx.coroutines.delay
 
+
 @Composable
 fun RegisterScreen(
     viewModel: RegisterViewModel,
