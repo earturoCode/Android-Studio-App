@@ -32,6 +32,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.gamesapplication.R
+import com.example.gamesapplication.comons.ButtonWithText
 import com.example.gamesapplication.navigation.Routes
 import com.example.gamesapplication.ui.theme.GamesApplicationTheme
 import com.example.gamesapplication.viewModels.LoginViewModel
@@ -39,7 +40,6 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewModel= viewModel()) {
-
     Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.fillMaxSize()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -55,20 +55,20 @@ fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewMo
             )
             Spacer(Modifier.height(40.dp))
 
-            // Campo de usuario
             TextFieldWithPlaceHolder("Correo electronico", loginViewModel.username ) { loginViewModel.updateUsername(it) }
             Spacer(Modifier.height(16.dp))
 
-            // Campo de contraseña
             TextFieldWithPlaceHolder("Contraseña", loginViewModel.password, isPassword = true) { loginViewModel.updatePassword(it) }
             Spacer(Modifier.height(24.dp))
 
-            // Botón de iniciar sesión
             IniciarSesionButton("Iniciar Sesión", loginViewModel , navController)
             Spacer(Modifier.height(16.dp))
 
-            // Botón de registro
             RegisterButton("Registrarse", navController)
+            Spacer(Modifier.height(200.dp))
+            ButtonWithText("Top 5") {
+
+            }
         }
     }
 }
