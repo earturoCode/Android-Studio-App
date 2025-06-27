@@ -27,7 +27,7 @@ class LoginViewModel(private val authCaseOfUse: AuthCaseOfUse=AuthCaseOfUse()) :
         showDialog=!showDialog
     }
 
-    private fun clearUsernameAndPassword(){
+    fun clearUsernameAndPassword(){
         username=""
         password=""
     }

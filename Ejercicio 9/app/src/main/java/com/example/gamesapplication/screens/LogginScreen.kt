@@ -67,7 +67,7 @@ fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewMo
             IniciarSesionButton("Iniciar Sesión", loginViewModel , navController)
             Spacer(Modifier.height(16.dp))
 
-            RegisterButton("Registrarse", navController)
+            RegisterButton("Registrarse", navController, loginViewModel)
             Spacer(Modifier.height(200.dp))
             ButtonWithText("Top 10") {
                 navController.navigate("${Routes.SCOREBOARD}/Top 10")
@@ -124,9 +124,10 @@ fun IniciarSesionButton(
 }
 
 @Composable
-fun RegisterButton(text: String, navController: NavHostController) {
+fun RegisterButton(text: String, navController: NavHostController,loginViewModel: LoginViewModel) {
     OutlinedButton(
         onClick = {
+            loginViewModel.clearUsernameAndPassword()
             navController.navigate(Routes.REGISTER)
         },
         colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.primary),
