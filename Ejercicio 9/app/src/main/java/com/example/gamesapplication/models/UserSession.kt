@@ -13,6 +13,10 @@ object UserSession {
     var userName: String? = null
         private set
 
+    fun getToken(): String {
+        return accessToken ?: ""
+    }
+
     fun login(userId: String, email: String, token: String) {
         this.userId = userId
         this.userEmail = email

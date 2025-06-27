@@ -79,22 +79,23 @@ class TocameViewModel : ViewModel() {
         val currentDate = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy")
         val formattedDate = currentDate.format(formatter)
-        Log.e(
-            "LOGIN",
-            "Exitoso: ${userPreferences.userData.first().first}${userPreferences.userData.first().second}"
-        )
+
+        // Crear el request usando los nombres correctos
         val createScoreRequest = CreateScoreRequest(
-            user_id = userPreferences.userData.first().first ?: "",
-            game_id = "1",
+            userId = userPreferences.userData.first().first ?: "",
+            gameId = 1, // Debe ser INT, no String
             score = puntaje,
-            date = formattedDate.toString()
+            date = formattedDate
         )
+
         try {
             val response = RetrofitInstance.restApi.createScore(
-                "Bearer ${userPreferences.userData.first().second ?: ""}", createScoreRequest
+                apiKey = RetrofitInstance.API_KEY, // si tu función lo requiere
+                token = "Bearer ${userPreferences.userData.first().second ?: ""}",
+                request = createScoreRequest
             )
             if (response.isSuccessful) {
-                Log.e("LOGIN", "Exitoso: ${response.code()}")
+                Log.e("LOGIN", "Puntaje guardado exitosamente: ${response.code()}")
             } else {
                 Log.e("LOGIN", "Error: ${response.code()} ${response.errorBody()?.string()}")
             }

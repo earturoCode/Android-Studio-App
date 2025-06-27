@@ -44,8 +44,10 @@ fun AppNavigation(navController: NavHostController) {
         composable(Routes.TOCAME) {
             TocameInterace(navController)
         }
-        composable(Routes.SCOREBOARD) {
-            ScoreboardScreen( )
+        composable("${Routes.SCOREBOARD}/{filter}") { backStackEntry ->
+            val filter = backStackEntry.arguments?.getString("filter") ?: "Top 10"
+            ScoreboardScreen(filter = filter)
+
         }
     }
 }
