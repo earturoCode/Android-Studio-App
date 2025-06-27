@@ -1,6 +1,7 @@
 package com.example.gamesapplication.network
 
 import com.example.gamesapplication.models.*
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -11,7 +12,7 @@ interface ApiService {
         @Header("apikey") apiKey: String,
         @Header("Authorization") token: String,
         @Body request: CreateScoreRequest
-    ): Response<CreateScoreResponse>
+    ): Response<ResponseBody>
 
     @GET("scores")
     suspend fun getAllScores(

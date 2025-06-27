@@ -51,8 +51,8 @@ fun HomeInterface(navController: NavHostController, homeViewModel: HomeViewModel
         MaterialTheme.colorScheme.background)) {
         val density = LocalDensity.current
         Spacer(Modifier.height(80.dp))
-        ButtonWithText(text = "Cerrar sesion") {navController.navigate(Routes.LOGIN) }
-        Text(text="Bienvenido: ${homeViewModel.name}")
+        ButtonWithText(text = "Cerrar sesion") {navController.popBackStack() }
+        Text(text="Bienvenido: ${homeViewModel.name}",color=MaterialTheme.colorScheme.onBackground)
         Spacer(modifier= Modifier.height(120.dp))
         HorizontalPagerGames(homeViewModel)
         Spacer(Modifier.height(32.dp))

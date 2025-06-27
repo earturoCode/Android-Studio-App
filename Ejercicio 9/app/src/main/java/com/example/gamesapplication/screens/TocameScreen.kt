@@ -17,8 +17,10 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -26,10 +28,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
@@ -40,14 +44,17 @@ import com.example.gamesapplication.viewModels.TocameViewModel
 import kotlin.random.Random
 
 @Composable
-fun TocameInterace(navController: NavHostController,tocameViewModel: TocameViewModel= viewModel()) {
+fun TocameInterface(navController: NavHostController, tocameViewModel: TocameViewModel= viewModel()) {
     LaunchedEffect (Unit) { tocameViewModel.updateName() }
     Column(modifier = Modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         Spacer(Modifier.height(40.dp))
         RowNameScoreTimer(tocameViewModel)
+        Spacer(Modifier.height(12.dp))
+        ShowScoreAlert(tocameViewModel)
         ContainerTocame(tocameViewModel)
+        Spacer(Modifier.height(30.dp))
         RowButtons(tocameViewModel, navController)
-        Spacer(Modifier.height(10.dp))
+
     }
 }
 
@@ -68,7 +75,7 @@ fun ContainerTocame(tocameViewModel: TocameViewModel) {
     val density = LocalDensity.current
     BoxWithConstraints(
         modifier = Modifier.fillMaxWidth()
-            .height(LocalConfiguration.current.screenHeightDp.dp - 160.dp)
+            .height(LocalConfiguration.current.screenHeightDp.dp - 200.dp)
             .background(MaterialTheme.colorScheme.secondary)
     ) {
         LaunchedEffect(Unit) {
@@ -102,19 +109,39 @@ fun RowNameScoreTimer(tocameViewModel: TocameViewModel) {
     Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween) {
-        Text(text = tocameViewModel.name, color= MaterialTheme.colorScheme.onBackground)
+        Text(text = tocameViewModel.name, color= MaterialTheme.colorScheme.onBackground, fontSize = 24.sp)
         Text(
-            text = "Puntaje: ${tocameViewModel.puntaje}",color=MaterialTheme.colorScheme.onBackground,
+            text = "Puntaje: ${tocameViewModel.puntaje}", fontSize = 24.sp,color=MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.align(Alignment.CenterVertically)
         )
-        Text(text = tocameViewModel.timer.toString(), color= MaterialTheme.colorScheme.onBackground)
+        Text(text = tocameViewModel.timer.toString(), fontSize = 24.sp, color= MaterialTheme.colorScheme.onBackground)
+    }
+}
+@Composable
+fun ShowScoreAlert(tocameViewModel: TocameViewModel){
+    if (tocameViewModel.showScoreAlert) {
+        val onDismiss = {tocameViewModel.updateScoreAlert()}
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = {
+                Text(text = "Enhorabuena")
+            },
+            text = {
+                Text(tocameViewModel.scoreAlertText)
+            },
+            confirmButton = {
+                TextButton(onClick = onDismiss) {
+                    Text("Aceptar")
+                }
+            }
+        )
     }
 }
 @Preview(showBackground = true)
 @Composable
 fun TocamePreview() {
     GamesApplicationTheme {
-        TocameInterace(rememberNavController())
+        TocameInterface(rememberNavController())
     }
 }
 

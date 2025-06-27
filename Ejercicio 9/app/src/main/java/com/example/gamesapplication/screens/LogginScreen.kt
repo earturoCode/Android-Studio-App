@@ -1,5 +1,6 @@
 package com.example.gamesapplication.screens
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.LocalTextStyle
@@ -16,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -57,7 +60,7 @@ fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewMo
 
             TextFieldWithPlaceHolder("Correo electronico", loginViewModel.username ) { loginViewModel.updateUsername(it) }
             Spacer(Modifier.height(16.dp))
-
+            ShowAuthAlert(loginViewModel)
             TextFieldWithPlaceHolder("Contraseña", loginViewModel.password, isPassword = true) { loginViewModel.updatePassword(it) }
             Spacer(Modifier.height(24.dp))
 
@@ -68,24 +71,46 @@ fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewMo
             Spacer(Modifier.height(200.dp))
             ButtonWithText("Top 10") {
                 navController.navigate("${Routes.SCOREBOARD}/Top 10")
-
             }
         }
     }
 }
-
+@Composable
+fun ShowAuthAlert(loginViewModel: LoginViewModel){
+    if (loginViewModel.showDialog) {
+        val onDismiss = {loginViewModel.updateDialogState()}
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            title = {
+                Text(text = "Alerta")
+            },
+            text = {
+                Text(loginViewModel.dialogText)
+            },
+            confirmButton = {
+                TextButton(onClick = onDismiss) {
+                    Text("Aceptar")
+                }
+            }
+        )
+    }
+}
 @Composable
 fun IniciarSesionButton(
     text: String,
     loginViewModel: LoginViewModel,
-    navController: NavHostController
-) {
+    navController: NavHostController) {
     val coroutineScope = rememberCoroutineScope()
-
     Button(
         onClick = {
             coroutineScope.launch {
-                 loginViewModel.sendLoginRequest(navController)
+                if(loginViewModel.username.isEmpty()){ loginViewModel.updateDialogState("Debe introducir su correo electronico")}
+                else if (loginViewModel.password.isEmpty()) {loginViewModel.updateDialogState("Debe introducir su Password")}
+                else {
+                    val response=loginViewModel.sendLoginRequest()
+                    if (response=="Se ha loggeado correctamente") navController.navigate(Routes.HOME)
+                    else loginViewModel.updateDialogState(response)
+                }
             }
         },
         colors = ButtonDefaults.buttonColors(

@@ -28,16 +28,6 @@ data class CreateScoreRequest(
     val date: String
 )
 
-// Respuesta del servidor al crear un Score
-data class CreateScoreResponse(
-    val id: Int,
-    @SerializedName("user_id") val userId: String,
-    @SerializedName("game_id") val gameId: Int,
-    val score: Int,
-    val date: String,
-    @SerializedName("created_at") val createdAt: String
-)
-
 // Estados de sincronización local
 enum class SyncStatus {
     PENDING,
