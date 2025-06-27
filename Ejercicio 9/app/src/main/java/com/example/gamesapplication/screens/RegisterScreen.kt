@@ -303,8 +303,8 @@ fun RegisterButton(registerEnable: Boolean, onRegisterSelected: () -> Unit) {
             .fillMaxWidth()
             .height(48.dp),
         colors = ButtonDefaults.buttonColors(
-            containerColor = Color(0xFFFF4303),
-            disabledContainerColor = Color(0xFFF78058),
+            containerColor = Color(0xFF005CFF),
+            disabledContainerColor = Color(0xFF001DDA),
             contentColor = Color.White,
             disabledContentColor = Color.White
         ),
@@ -327,7 +327,7 @@ fun GoToLogin(modifier: Modifier, onNavigateToLogin: () -> Unit) {
             modifier = Modifier.clickable { onNavigateToLogin() },
             fontSize = 12.sp,
             fontWeight = FontWeight.Bold,
-            color = Color(0xFFFB9600)
+            color = Color(0xFF002DD7)
         )
     }
 }

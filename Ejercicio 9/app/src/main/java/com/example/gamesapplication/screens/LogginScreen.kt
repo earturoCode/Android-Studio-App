@@ -66,7 +66,8 @@ fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewMo
 
             RegisterButton("Registrarse", navController)
             Spacer(Modifier.height(200.dp))
-            ButtonWithText("Top 5") {
+            ButtonWithText("Top 10") {
+                navController.navigate("${Routes.SCOREBOARD}/Top 10")
 
             }
         }

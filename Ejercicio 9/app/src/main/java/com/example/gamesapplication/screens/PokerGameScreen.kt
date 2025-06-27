@@ -2,7 +2,6 @@ package com.example.gamesapplication.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.R
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,7 +16,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -74,21 +72,25 @@ fun PokerGameScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 100.dp), // Espacio superior
-            textAlign = TextAlign.Center // Centrado horizontal
+            textAlign = TextAlign.Center // Centradoorizontal
         )
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Image(
-            painter = painterResource(id = com.example.gamesapplication.R.drawable.poker_game),
-            contentDescription = "Imagen Poker",
-            contentScale = ContentScale.Fit,
-            modifier = Modifier
-                .size(200.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .align(Alignment.CenterHorizontally)
-        )
-        Spacer(modifier = Modifier.height(2.dp))
+        // Imagen solo si el juego aún NO comenzó
+        if (!gameState.gameStarted) {
+            Image(
+                painter = painterResource(id = com.example.gamesapplication.R.drawable.poker_game),
+                contentDescription = "Imagen Poker",
+                contentScale = ContentScale.Fit,
+                modifier = Modifier
+                    .size(200.dp)
+                    .clip(RoundedCornerShape(16.dp))
+                    .align(Alignment.CenterHorizontally)
+            )
+
+            Spacer(modifier = Modifier.height(24.dp)) // Separación visual
+        }
 
         when {
             !gameState.gameStarted -> {
