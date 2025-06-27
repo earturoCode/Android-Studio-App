@@ -42,7 +42,7 @@ class ScoresViewModel : ViewModel() {
                 )
                 if (response.isSuccessful) {
                     val apiScores = response.body() ?: emptyList()
-                    val tocameScores = apiScores.filter { it.gameId == 2 }
+                    val tocameScores = apiScores.filter { it.gameId == 1 }
 
                     val scores = tocameScores.map {
                         Score(

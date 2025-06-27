@@ -60,6 +60,7 @@ fun ScoreboardScreen(
     // Obtener el nombre real del usuario desde el login
     LaunchedEffect(Unit) {
         viewModel.setCurrentUser(   UserSession.getCurrentUserName()) // Usar el usuario real
+        viewModel.refresh()
     }
 
     Column(
