@@ -38,6 +38,20 @@ class TocameViewModel : ViewModel() {
     var boxPosition by mutableStateOf(Pair(0.dp, 0.dp))
         private set
 
+    var showScoreAlert by mutableStateOf(false)
+        private set
+
+    var scoreAlertText by mutableStateOf("")
+
+    fun updateScoreAlert(){
+        showScoreAlert=!showScoreAlert
+    }
+
+    fun updateScoreAlert(text:String){
+        showScoreAlert=!showScoreAlert
+        scoreAlertText=text
+    }
+
     fun incrementarPuntaje() {
         puntaje++
     }
@@ -63,14 +77,13 @@ class TocameViewModel : ViewModel() {
     fun iniciarTimer() {
         if (isTimerActive) return
         isTimerActive = true
-
         CoroutineScope(Dispatchers.Main).launch {
             while (timer > 0) {
                 delay(1000)
                 timer--
             }
-            reiniciarJuego()
             sendCreateScoreRequest()
+            reiniciarJuego()
         }
     }
 
@@ -102,5 +115,6 @@ class TocameViewModel : ViewModel() {
         } catch (e: Exception) {
             Log.e("LOGIN", "Excepción: ${e.localizedMessage}")
         }
+        updateScoreAlert("Tu puntaje fue de: $puntaje")
     }
 }

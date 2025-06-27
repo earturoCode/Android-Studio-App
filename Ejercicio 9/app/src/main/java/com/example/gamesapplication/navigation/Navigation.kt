@@ -11,7 +11,7 @@ import com.example.gamesapplication.screens.LoginInterface
 import com.example.gamesapplication.screens.PokerGameScreen
 import com.example.gamesapplication.screens.RegisterScreen
 import com.example.gamesapplication.screens.ScoreboardScreen
-import com.example.gamesapplication.screens.TocameInterace
+import com.example.gamesapplication.screens.TocameInterface
 import com.example.gamesapplication.viewModels.RegisterViewModel
 
 object Routes {
@@ -42,7 +42,7 @@ fun AppNavigation(navController: NavHostController) {
             PokerGameScreen(navController)
         }
         composable(Routes.TOCAME) {
-            TocameInterace(navController)
+            TocameInterface(navController)
         }
         composable("${Routes.SCOREBOARD}/{filter}") { backStackEntry ->
             val filter = backStackEntry.arguments?.getString("filter") ?: "Top 10"
