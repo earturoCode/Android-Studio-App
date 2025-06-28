@@ -90,7 +90,7 @@ class ScoresViewModel : ViewModel() {
                 val date = SimpleDateFormat("MM-dd-yyyy", Locale.getDefault()).format(Date())
                 val request = CreateScoreRequest(
                     userId = UserSession.getCurrentUserId(),
-                    gameId = 2,
+                    gameId = 1,
                     score = points,
                     date = date
                 )

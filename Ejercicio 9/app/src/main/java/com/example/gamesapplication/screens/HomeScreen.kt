@@ -20,6 +20,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -36,24 +37,51 @@ import androidx.navigation.compose.rememberNavController
 import com.example.gamesapplication.R
 import com.example.gamesapplication.comons.ButtonWithText
 import com.example.gamesapplication.comons.GenerateImage
+import com.example.gamesapplication.dataStore.UserPreferencesManager
 import com.example.gamesapplication.navigation.Routes
 import com.example.gamesapplication.ui.theme.GamesApplicationTheme
 import com.example.gamesapplication.viewModels.HomeViewModel
+import kotlinx.coroutines.launch
 
 
 @Composable
-fun HomeInterface(navController: NavHostController, homeViewModel: HomeViewModel=viewModel()){
-    LaunchedEffect (Unit){
+fun HomeInterface(navController: NavHostController, homeViewModel: HomeViewModel = viewModel()) {
+    val coroutineScope = rememberCoroutineScope()
+    LaunchedEffect(Unit) {
         homeViewModel.setNameFromDataStore()
     }
-    homeViewModel.updatePagerState(rememberPagerState (0, pageCount = {2}))
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().background(
-        MaterialTheme.colorScheme.background)) {
+    homeViewModel.updatePagerState(rememberPagerState(0, pageCount = { 2 }))
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                MaterialTheme.colorScheme.background
+            )
+    ) {
         val density = LocalDensity.current
         Spacer(Modifier.height(80.dp))
-        ButtonWithText(text = "Cerrar sesion") {navController.navigate(Routes.LOGIN) }
-        Text(text="Bienvenido: ${homeViewModel.name}")
-        Spacer(modifier= Modifier.height(120.dp))
+        ButtonWithText(text = "Cerrar sesión") {
+            coroutineScope.launch {
+                UserPreferencesManager.get().clearUserData()
+                //homeViewModel.name = ""
+                navController.navigate(Routes.LOGIN)
+            }
+        }
+
+        val nombreMostrado = if (homeViewModel.name.isNotBlank()) homeViewModel.name else "Jugador"
+
+//        Text(text = "Bienvenido: $nombreMostrado")
+        Text(
+            text = "Bienvenido: $nombreMostrado",
+            style = MaterialTheme.typography.headlineSmall,
+            modifier = Modifier.padding(vertical = 8.dp),
+            color = MaterialTheme.colorScheme.primary
+        )
+
+
+//        Text(text="Bienvenido: ${homeViewModel.name}")
+        Spacer(modifier = Modifier.height(120.dp))
         HorizontalPagerGames(homeViewModel)
         Spacer(Modifier.height(32.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
@@ -64,17 +92,24 @@ fun HomeInterface(navController: NavHostController, homeViewModel: HomeViewModel
             }
             ButtonWithText("Puntajes") {
                 navController.navigate("${Routes.SCOREBOARD}/Mis Puntajes")
-            }        }
-        Spacer(Modifier.height(240.dp-homeViewModel.textAyudaHeight))
-        ButtonWithText(text="Ayuda") { homeViewModel.changeAyudaState() }
-        Text(text = homeViewModel.returnAyudaText(), textAlign = TextAlign.Justify, modifier = Modifier.padding(horizontal = 8.dp).onGloballyPositioned{
-            layoutCoordinates -> homeViewModel.updateTextAyudaHeight(with(density){layoutCoordinates.size.height.toDp()})
-        })
+
+            }
+        }
+        Spacer(Modifier.height(240.dp - homeViewModel.textAyudaHeight))
+        ButtonWithText(text = "Ayuda") { homeViewModel.changeAyudaState() }
+        Text(
+            text = homeViewModel.returnAyudaText(),
+            textAlign = TextAlign.Justify,
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .onGloballyPositioned { layoutCoordinates ->
+                    homeViewModel.updateTextAyudaHeight(with(density) { layoutCoordinates.size.height.toDp() })
+                })
     }
 }
 
 @Composable
-fun HorizontalPagerGames(homeViewModel:HomeViewModel){
+fun HorizontalPagerGames(homeViewModel: HomeViewModel) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         HorizontalPager(
             state = homeViewModel.pagerState,
@@ -93,19 +128,25 @@ fun HorizontalPagerGames(homeViewModel:HomeViewModel){
                 )
             }
         }
-        Row(verticalAlignment = Alignment.CenterVertically, modifier=Modifier.padding(top = 8.dp)){
-            BoxForPager(if(homeViewModel.pagerState.currentPage==0)Color.Blue else Color.Gray )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(top = 8.dp)
+        ) {
+            BoxForPager(if (homeViewModel.pagerState.currentPage == 0) Color.Blue else Color.Gray)
             Spacer(Modifier.width(8.dp))
-            BoxForPager(if(homeViewModel.pagerState.currentPage==1)Color.Blue else Color.Gray )
+            BoxForPager(if (homeViewModel.pagerState.currentPage == 1) Color.Blue else Color.Gray)
         }
     }
 }
+
 @Composable
-fun BoxForPager(color: Color){
-    Box(Modifier
-        .clip(CircleShape)
-        .size(8.dp)
-        .background(color)){}
+fun BoxForPager(color: Color) {
+    Box(
+        Modifier
+            .clip(CircleShape)
+            .size(8.dp)
+            .background(color)
+    ) {}
 }
 
 @Preview(showBackground = true)

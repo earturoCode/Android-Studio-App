@@ -31,16 +31,16 @@ class LoginViewModel : ViewModel() {
         try {
             val response = RetrofitInstance.authApi.login(loginRequest)
             if (response.isSuccessful) {
+
                 val loginResponse = response.body()
-                navController.navigate(Routes.HOME)
-                val userDefaults = UserPreferencesManager.get()
                 val userId = loginResponse?.user?.id?:""
                 val token = loginResponse?.access_token ?: ""
                 val name = loginResponse?.user?.user_metadata?.name?:""
-                userDefaults.saveUserData(userId,token, name)
-                Log.d("LOGIN", "Token: ${loginResponse?.access_token}")
-                Log.d("LOGIN", "id: ${loginResponse?.user?.id}")
-                Log.d("LOGIN", "id: $name")
+                UserPreferencesManager.get().saveUserData(userId, token, name)
+                navController.navigate(Routes.HOME)
+                Log.d("LOGIN", "Token: $token")
+                Log.d("LOGIN", "ID: $userId")
+                Log.d("LOGIN", "Name: $name")
             } else {
                 Log.e("LOGIN", "Error: ${response.code()} ${response.errorBody()?.string()}")
             }

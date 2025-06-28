@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamesapplication.RetrofitInstance
+import com.example.gamesapplication.dataStore.UserPreferencesManager
 import com.example.gamesapplication.models.RegisterRequest
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -150,10 +151,14 @@ class RegisterViewModel : ViewModel() {
             _generalError.value = null
 
             try {
-                // Crear request con datos sanitizados
+                val nameValue = _name.value ?: ""
+
                 val registerRequest = RegisterRequest(
                     email = _email.value?.trim()?.lowercase() ?: "",
-                    password = _password.value ?: ""
+                    password = _password.value ?: "",
+                    options = RegisterRequest.Options(
+                        data = mapOf("name" to nameValue)
+                    )
                 )
 
                 // Llamada a la API
@@ -164,6 +169,12 @@ class RegisterViewModel : ViewModel() {
                     Log.d("REGISTER", "Usuario registrado exitosamente")
                     Log.d("REGISTER", "Token: ${registerResponse?.access_token}")
                     Log.d("REGISTER", "User ID: ${registerResponse?.user?.id}")
+                    // GUARDAR EN DATASTORE
+                    UserPreferencesManager.get().saveUserData(
+                        userId = registerResponse?.user?.id ?: "",
+                        token = registerResponse?.access_token ?: "",
+                        username = _name.value ?: ""
+                    )
                     _registerSuccess.value = true
                 } else {
                     handleServerError(response.code())
