@@ -94,7 +94,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
                 color = Color(0xFF636262),
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
-            Spacer(modifier = Modifier.height(16.dp))  // ← CORRECTO
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Subtítulo descriptivo
             Text(
@@ -103,7 +103,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
                 color = Color(0xFF888888),
                 textAlign = TextAlign.Center
             )
-            Spacer(modifier = Modifier.height(16.dp))  // ← CORRECTO
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Mostrar error general del servidor si existe
             generalError?.let { error ->
@@ -122,28 +122,28 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
             NameField(name, nameError) {
                 viewModel.onRegisterChanged(it, email, password, confirmPassword)
             }
-            Spacer(modifier = Modifier.height(4.dp))  // ← CORRECTO
+            Spacer(modifier = Modifier.height(4.dp))
 
             EmailField(email, emailError) {
                 viewModel.onRegisterChanged(name, it, password, confirmPassword)
             }
-            Spacer(modifier = Modifier.height(4.dp))  // ← CORRECTO
+            Spacer(modifier = Modifier.height(4.dp))
 
             PasswordField(password, passwordError) {
                 viewModel.onRegisterChanged(name, email, it, confirmPassword)
             }
-            Spacer(modifier = Modifier.height(4.dp))  // ← CORRECTO
+            Spacer(modifier = Modifier.height(4.dp))
 
             ConfirmPasswordField(confirmPassword, confirmPasswordError) {
                 viewModel.onRegisterChanged(name, email, password, it)
             }
-            Spacer(modifier = Modifier.height(16.dp))  // ← CORRECTO
+            Spacer(modifier = Modifier.height(16.dp))
 
             // Botón de registro
             RegisterButton(registerEnable) {
                 viewModel.onRegisterSelected()
             }
-            Spacer(modifier = Modifier.height(8.dp))  // ← CORRECTO
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Link para navegar al login
             GoToLogin(Modifier.align(Alignment.CenterHorizontally)) {

@@ -37,6 +37,10 @@ class UserPreferencesManager private constructor(context: Context) {
     val userData: Flow<Triple<String?, String?, String?>> = dataStore.data.map { prefs ->
         Triple(prefs[UserPreferencesKeys.USER_ID],prefs[UserPreferencesKeys.TOKEN],prefs[UserPreferencesKeys.USERNAME])
     }
+    suspend fun clearUserData() {
+        dataStore.edit { it.clear() }
+    }
+
 }
 val Context.dataStore by preferencesDataStore(name = "user_prefs")
 

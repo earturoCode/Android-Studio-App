@@ -13,11 +13,22 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import com.example.gamesapplication.dataStore.UserPreferencesManager
+import kotlinx.coroutines.flow.first
 
 class PokerViewModel : ViewModel() {
 
     private val _gameState = MutableStateFlow(GameState())
     val gameState: StateFlow<GameState> = _gameState.asStateFlow()
+
+    // Nuevo método para iniciar el juego con el nombre registrado
+    fun iniciarJuegoDesdeDataStore() {
+        viewModelScope.launch {
+            // Leer nombre del usuario registrado
+            val nombreJugador = UserPreferencesManager.get().userData.first().third ?: "Jugador"
+            iniciarJuego(nombreJugador)
+        }
+    }
 
     fun iniciarJuego(nombreJugador: String) {
         viewModelScope.launch {

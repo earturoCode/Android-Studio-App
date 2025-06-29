@@ -2,7 +2,8 @@ package com.example.gamesapplication.models
 
 data class RegisterRequest(
     val email: String,
-    val password: String
+    val password: String,
+    val data: Map<String, Any>? = null
 )
 
 

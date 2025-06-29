@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.gamesapplication.RetrofitInstance
+import com.example.gamesapplication.dataStore.UserPreferencesManager
 import com.example.gamesapplication.models.RegisterRequest
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -150,10 +151,12 @@ class RegisterViewModel : ViewModel() {
             _generalError.value = null
 
             try {
-                // Crear request con datos sanitizados
+                val nameValue = _name.value ?: ""
+
                 val registerRequest = RegisterRequest(
-                    email = _email.value?.trim()?.lowercase() ?: "",
-                    password = _password.value ?: ""
+                    email = _email.value!!.trim().lowercase(),
+                    password = _password.value!!,
+                    data = mapOf("name" to (_name.value ?: ""))
                 )
 
                 // Llamada a la API
@@ -164,6 +167,12 @@ class RegisterViewModel : ViewModel() {
                     Log.d("REGISTER", "Usuario registrado exitosamente")
                     Log.d("REGISTER", "Token: ${registerResponse?.access_token}")
                     Log.d("REGISTER", "User ID: ${registerResponse?.user?.id}")
+                    // GUARDAR EN DATASTORE
+                    UserPreferencesManager.get().saveUserData(
+                        userId = registerResponse?.user?.id ?: "",
+                        token = registerResponse?.access_token ?: "",
+                        username = _name.value ?: ""
+                    )
                     _registerSuccess.value = true
                 } else {
                     handleServerError(response.code())
@@ -220,27 +229,3 @@ class RegisterViewModel : ViewModel() {
         _generalError.value = null
     }
 }
-
-
-// Modelos de respuestas
-
-data class RegisterRequest(
-    val email: String,
-    val password: String
-)
-
-
-data class RegisterResponse(
-    val access_token: String?,
-    val token_type: String?,
-    val expires_in: Int?,
-    val refresh_token: String?,
-    val user: UserData?
-)
-
-data class UserData(
-    val id: String,
-    val email: String,
-    val email_confirmed_at: String?,
-    val created_at: String?
-)

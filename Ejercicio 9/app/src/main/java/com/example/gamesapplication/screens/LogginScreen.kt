@@ -42,7 +42,7 @@ import com.example.gamesapplication.viewModels.LoginViewModel
 import kotlinx.coroutines.launch
 
 @Composable
-fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewModel= viewModel()) {
+fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewModel = viewModel()) {
     Surface(color = MaterialTheme.colorScheme.background, modifier = Modifier.fillMaxSize()) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
@@ -58,13 +58,20 @@ fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewMo
             )
             Spacer(Modifier.height(40.dp))
 
-            TextFieldWithPlaceHolder("Correo electronico", loginViewModel.username ) { loginViewModel.updateUsername(it) }
+            TextFieldWithPlaceHolder(
+                "Correo electronico",
+                loginViewModel.username
+            ) { loginViewModel.updateUsername(it) }
             Spacer(Modifier.height(16.dp))
             ShowAuthAlert(loginViewModel)
-            TextFieldWithPlaceHolder("Contraseña", loginViewModel.password, isPassword = true) { loginViewModel.updatePassword(it) }
+            TextFieldWithPlaceHolder(
+                "Contraseña",
+                loginViewModel.password,
+                isPassword = true
+            ) { loginViewModel.updatePassword(it) }
             Spacer(Modifier.height(24.dp))
 
-            IniciarSesionButton("Iniciar Sesión", loginViewModel , navController)
+            IniciarSesionButton("Iniciar Sesión", loginViewModel, navController)
             Spacer(Modifier.height(16.dp))
 
             RegisterButton("Registrarse", navController, loginViewModel)
@@ -75,10 +82,11 @@ fun LoginInterface(navController: NavHostController, loginViewModel: LoginViewMo
         }
     }
 }
+
 @Composable
-fun ShowAuthAlert(loginViewModel: LoginViewModel){
+fun ShowAuthAlert(loginViewModel: LoginViewModel) {
     if (loginViewModel.showDialog) {
-        val onDismiss = {loginViewModel.updateDialogState()}
+        val onDismiss = { loginViewModel.updateDialogState() }
         AlertDialog(
             onDismissRequest = onDismiss,
             title = {
@@ -95,20 +103,24 @@ fun ShowAuthAlert(loginViewModel: LoginViewModel){
         )
     }
 }
+
 @Composable
 fun IniciarSesionButton(
     text: String,
     loginViewModel: LoginViewModel,
-    navController: NavHostController) {
+    navController: NavHostController
+) {
     val coroutineScope = rememberCoroutineScope()
     Button(
         onClick = {
             coroutineScope.launch {
-                if(loginViewModel.username.isEmpty()){ loginViewModel.updateDialogState("Debe introducir su correo electronico")}
-                else if (loginViewModel.password.isEmpty()) {loginViewModel.updateDialogState("Debe introducir su Password")}
-                else {
-                    val response=loginViewModel.sendLoginRequest()
-                    if (response=="Se ha loggeado correctamente") navController.navigate(Routes.HOME)
+                if (loginViewModel.username.isEmpty()) {
+                    loginViewModel.updateDialogState("Debe introducir su correo electronico")
+                } else if (loginViewModel.password.isEmpty()) {
+                    loginViewModel.updateDialogState("Debe introducir su Password")
+                } else {
+                    val response = loginViewModel.sendLoginRequest()
+                    if (response == "Se ha loggeado correctamente") navController.navigate(Routes.HOME)
                     else loginViewModel.updateDialogState(response)
                 }
             }
@@ -124,7 +136,7 @@ fun IniciarSesionButton(
 }
 
 @Composable
-fun RegisterButton(text: String, navController: NavHostController,loginViewModel: LoginViewModel) {
+fun RegisterButton(text: String, navController: NavHostController, loginViewModel: LoginViewModel) {
     OutlinedButton(
         onClick = {
             loginViewModel.clearUsernameAndPassword()
@@ -136,6 +148,7 @@ fun RegisterButton(text: String, navController: NavHostController,loginViewModel
         Text(text)
     }
 }
+
 @Composable
 fun TextFieldWithPlaceHolder(
     text: String,
