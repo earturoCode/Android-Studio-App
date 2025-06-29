@@ -3,12 +3,8 @@ package com.example.gamesapplication.models
 data class RegisterRequest(
     val email: String,
     val password: String,
-    val options: Options? = null
-){
-    data class Options(
-        val data: Map<String, String>
-    )
-}
+    val data: Map<String, Any>? = null
+)
 
 
 data class RegisterResponse(

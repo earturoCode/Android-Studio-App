@@ -25,8 +25,11 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,18 +45,25 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.gamesapplication.dataStore.UserPreferencesManager
 import com.example.gamesapplication.models.Carta
 import com.example.gamesapplication.models.Jugador
 import com.example.gamesapplication.ui.theme.GamesApplicationTheme
 import com.example.gamesapplication.viewModels.PokerViewModel
+import kotlinx.coroutines.flow.first
 
 @Composable
 fun PokerGameScreen(
     navController: NavHostController,
-    nombreJugador: String = "Jugador"
+    viewModel: PokerViewModel = viewModel()
 ) {
-    val viewModel: PokerViewModel = viewModel()
     val gameState by viewModel.gameState.collectAsState()
+    val nombreJugador = remember { mutableStateOf("Jugador") }
+
+    // Obtener el nombre del jugador registrado desde DataStore
+    LaunchedEffect(Unit) {
+        nombreJugador.value = UserPreferencesManager.get().userData.first().third ?: "Jugador"
+    }
 
     Column(
         modifier = Modifier
@@ -61,7 +71,6 @@ fun PokerGameScreen(
             .background(Color(0xFF0F5132))
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-
     ) {
         // Título del juego
         Text(
@@ -72,7 +81,7 @@ fun PokerGameScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 100.dp), // Espacio superior
-            textAlign = TextAlign.Center // Centradoorizontal
+            textAlign = TextAlign.Center
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -96,8 +105,8 @@ fun PokerGameScreen(
             !gameState.gameStarted -> {
                 // Pantalla inicial
                 PantallaInicial(
-                    nombreJugador = nombreJugador,
-                    onIniciarJuego = { viewModel.iniciarJuego(nombreJugador) }
+                    nombreJugador = nombreJugador.value,
+                    onIniciarJuego = { viewModel.iniciarJuego(nombreJugador.value) }
                 )
             }
 
@@ -117,6 +126,7 @@ fun PokerGameScreen(
         }
     }
 }
+
 
 @Composable
 fun PantallaInicial(
@@ -416,6 +426,8 @@ fun CartaComponent(carta: Carta) {
 @Composable
 fun PokerGamePreview() {
     GamesApplicationTheme {
-        PokerGameScreen(rememberNavController(), "Jugador Test")
+        // Usamos viewModel() para proporcionar el ViewModel correctamente
+        val viewModel: PokerViewModel = viewModel()
+        PokerGameScreen(navController = rememberNavController(), viewModel = viewModel)
     }
 }

@@ -60,4 +60,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.gson)
     implementation(libs.datastore.preferences)
+
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
 }

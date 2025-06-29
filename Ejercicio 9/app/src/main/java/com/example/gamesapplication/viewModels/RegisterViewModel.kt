@@ -154,11 +154,9 @@ class RegisterViewModel : ViewModel() {
                 val nameValue = _name.value ?: ""
 
                 val registerRequest = RegisterRequest(
-                    email = _email.value?.trim()?.lowercase() ?: "",
-                    password = _password.value ?: "",
-                    options = RegisterRequest.Options(
-                        data = mapOf("name" to nameValue)
-                    )
+                    email = _email.value!!.trim().lowercase(),
+                    password = _password.value!!,
+                    data = mapOf("name" to (_name.value ?: ""))
                 )
 
                 // Llamada a la API
@@ -231,27 +229,3 @@ class RegisterViewModel : ViewModel() {
         _generalError.value = null
     }
 }
-
-
-// Modelos de respuestas
-
-data class RegisterRequest(
-    val email: String,
-    val password: String
-)
-
-
-data class RegisterResponse(
-    val access_token: String?,
-    val token_type: String?,
-    val expires_in: Int?,
-    val refresh_token: String?,
-    val user: UserData?
-)
-
-data class UserData(
-    val id: String,
-    val email: String,
-    val email_confirmed_at: String?,
-    val created_at: String?
-)
